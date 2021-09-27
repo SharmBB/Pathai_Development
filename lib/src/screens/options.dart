@@ -13,6 +13,7 @@ import 'dart:ui' as ui;
 
 import 'package:places_autocomplete/src/screens/add_marker_screen.dart';
 import 'package:places_autocomplete/src/screens/home_screen.dart';
+import 'package:places_autocomplete/src/screens/route_add.dart';
 
 class Options extends StatefulWidget {
   @override
@@ -22,7 +23,7 @@ class Options extends StatefulWidget {
 class _HomePageState extends State<Options> {
   bool button1, button2;
 
-  static GlobalKey _globalKey = GlobalKey();
+
 
   @override
   void initState() {
@@ -34,10 +35,51 @@ class _HomePageState extends State<Options> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    return RepaintBoundary(
-      key: _globalKey,
-      child: Scaffold(
-        // appBar: AppBar(
+    return Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MyApp()),
+              );
+            },
+          ),
+          leadingWidth: 70,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.circle, color: Colors.white),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyForm()),
+                );
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.notifications_rounded, color: Colors.white),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyForm()),
+                );
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.settings, color: Colors.white),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyForm()),
+                );
+              },
+            ),
+          ],
+          backgroundColor: kPrimaryGreenColor,
+          elevation: 0,
+        ),
+     
         //   automaticallyImplyLeading: false,
         //   title: Text("Flutter Sharing File"),
         //   centerTitle: true,
@@ -127,8 +169,6 @@ class _HomePageState extends State<Options> {
                   )),
             ],
           ),
-        ),
-      ),
-    );
+        ));
   }
 }

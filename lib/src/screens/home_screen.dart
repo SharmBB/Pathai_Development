@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:places_autocomplete/Utils/Constraints.dart';
 import 'package:places_autocomplete/src/blocs/application_bloc.dart';
 import 'package:places_autocomplete/src/models/place.dart';
+import 'package:places_autocomplete/src/screens/options.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -96,6 +98,49 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final applicationBloc = Provider.of<ApplicationBloc>(context);
     return Scaffold(
+      appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Options()),
+              );
+            },
+          ),
+          leadingWidth: 70,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.circle, color: Colors.white),
+              // onPressed: () {
+              //   Navigator.push(
+              //     context,
+              //     MaterialPageRoute(builder: (context) => Options()),
+              //   );
+              // },
+            ),
+            IconButton(
+              icon: Icon(Icons.notifications_rounded, color: Colors.white),
+              // onPressed: () {
+              //   Navigator.push(
+              //     context,
+              //     MaterialPageRoute(builder: (context) => MyApp()),
+              //   );
+              // },
+            ),
+            IconButton(
+              icon: Icon(Icons.settings, color: Colors.white),
+              // onPressed: () {
+              //   Navigator.push(
+              //     context,
+              //     MaterialPageRoute(builder: (context) => MyApp()),
+              //   );
+              // },
+            ),
+          ],
+          backgroundColor: kPrimaryGreenColor,
+          elevation: 0,
+        ),
         body: (applicationBloc.currentLocation == null)
             ? Center(
                 child: CircularProgressIndicator(),

@@ -2,6 +2,8 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:places_autocomplete/Utils/Constraints.dart';
+import 'package:places_autocomplete/src/screens/options.dart';
 
 class GoogleMapScreen extends StatefulWidget {
   @override
@@ -23,6 +25,50 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Options()),
+              );
+            },
+          ),
+          leadingWidth: 70,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.circle, color: Colors.white),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Options()),
+                );
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.notifications_rounded, color: Colors.white),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Options()),
+                );
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.settings, color: Colors.white),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Options()),
+                );
+              },
+            ),
+          ],
+          backgroundColor: kPrimaryGreenColor,
+          elevation: 0,
+        ),
+      
       body: Container(
         child: GoogleMap(
           onTap: (LatLng latLng) {
