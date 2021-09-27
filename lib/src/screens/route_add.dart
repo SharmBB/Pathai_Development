@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:places_autocomplete/Utils/Constraints.dart';
 import 'package:places_autocomplete/src/screens/add_marker_screen.dart';
 import 'package:places_autocomplete/src/screens/home_screen.dart';
+import 'package:places_autocomplete/src/screens/options.dart';
 
 Future<void> main() async {
   // WidgetsFlutterBinding.ensureInitialized();
@@ -431,7 +432,8 @@ class _MyFormState extends State<MyForm> {
                             ),
                           ),
                         ),
-                      )),
+                      )
+                      ),
                 ],
               ),
             ),
@@ -559,7 +561,7 @@ class _MyFormState extends State<MyForm> {
         if (add) {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => GoogleMapScreen()),
+            MaterialPageRoute(builder: (context) => Options()),
           );
           // add new text-fields at the top of all friends textfields
           friendsList.insert(0, null);
