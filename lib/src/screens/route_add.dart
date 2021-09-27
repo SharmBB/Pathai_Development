@@ -1,9 +1,12 @@
 
+
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:places_autocomplete/Utils/Constraints.dart';
+import 'package:places_autocomplete/src/screens/add_marker_screen.dart';
 import 'package:places_autocomplete/src/screens/home_screen.dart';
 
 Future<void> main() async {
@@ -556,7 +559,7 @@ class _MyFormState extends State<MyForm> {
         if (add) {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => HomeScreen()),
+            MaterialPageRoute(builder: (context) => GoogleMapScreen()),
           );
           // add new text-fields at the top of all friends textfields
           friendsList.insert(0, null);
