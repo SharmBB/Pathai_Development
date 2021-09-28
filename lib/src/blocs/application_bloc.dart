@@ -59,7 +59,7 @@ class ApplicationBloc with ChangeNotifier {
     selectedLocation.add(sLocation);
     selectedLocationStatic = sLocation;
     searchResults = null;
-    geometry:
+    geometry: 
     Geometry(
       location: Location(
           lat: currentLocation.latitude, lng: currentLocation.longitude),
