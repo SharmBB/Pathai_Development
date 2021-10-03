@@ -1,16 +1,15 @@
 
-import 'package:firebase_core/firebase_core.dart';
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:places_autocomplete/Utils/Constraints.dart';
+import 'package:places_autocomplete/src/screens/add_marker_screen.dart';
 import 'package:places_autocomplete/src/screens/home_screen.dart';
+import 'package:places_autocomplete/src/screens/options.dart';
 
-Future<void> main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
-  runApp(MyApp());
-}
+
 
 class MyApp extends StatelessWidget {
   @override
@@ -32,7 +31,7 @@ class MyForm extends StatefulWidget {
 }
 
 class _MyFormState extends State<MyForm> {
-  final _formKey = GlobalKey<FormState>();
+ 
   TextEditingController _nameController;
   String _selectedTime;
   String _selectedTime1;
@@ -126,7 +125,7 @@ class _MyFormState extends State<MyForm> {
         backgroundColor: Colors.grey[200],
         body: SingleChildScrollView(
           child: Form(
-            key: _formKey,
+          
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -428,7 +427,8 @@ class _MyFormState extends State<MyForm> {
                             ),
                           ),
                         ),
-                      )),
+                      )
+                      ),
                 ],
               ),
             ),
@@ -556,7 +556,7 @@ class _MyFormState extends State<MyForm> {
         if (add) {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => HomeScreen()),
+            MaterialPageRoute(builder: (context) => Options()),
           );
           // add new text-fields at the top of all friends textfields
           friendsList.insert(0, null);
@@ -757,7 +757,8 @@ class _FriendTextFieldsState extends State<FriendTextFields> {
                           ],
                         ),
                       );
-                    });
+                    }
+                    );
               },
             ),
           ],
