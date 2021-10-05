@@ -30,8 +30,6 @@ class _NewHomeState extends State<NewHome> {
   final scaffoldKey = new GlobalKey<ScaffoldState>();
   final formKey = new GlobalKey<FormState>();
 
-  bool startPointCheck = false;
-
   TextEditingController _busRouteController = new TextEditingController();
   TextEditingController _busNoController = new TextEditingController();
 
@@ -46,6 +44,7 @@ class _NewHomeState extends State<NewHome> {
             child: Container(
               child: Form(
                 key: formKey,
+                autovalidate: _validate,
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Column(
@@ -58,41 +57,6 @@ class _NewHomeState extends State<NewHome> {
                       busNoInput(),
                       SizedBox(
                         height: 40,
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            'Start Point',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 16),
-                          ),
-                          Spacer(),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                startPointCheck = true;
-                                print(startPointCheck);
-                              });
-                              _showMyDialog();
-                            },
-                            child: Container(
-                              width: 22,
-                              height: 22,
-                              decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Icon(
-                                Icons.add,
-                                color: Colors.white,
-                                size: 15,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20,
                       ),
                       Row(
                         children: [
@@ -122,8 +86,17 @@ class _NewHomeState extends State<NewHome> {
                           ),
                         ],
                       ),
+                      latlonFromMap.length >= 2
+                          ? Text("")
+                          : Text(
+                              '*Minimum 2 (Start & End) points required',
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14),
+                            ),
                       SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
                       reload
                           ? Text(" ")
@@ -142,7 +115,7 @@ class _NewHomeState extends State<NewHome> {
                                 onPressed: () {
                                   onClick();
                                 },
-                                child: Text("Insert"),
+                                child: Text("Add Routes"),
                               ),
                       ),
                     ],
@@ -298,53 +271,52 @@ class _NewHomeState extends State<NewHome> {
       _isLoading = true;
     });
     try {
-      var addRoute = {
-        "name": _busRouteController.text,
-        "number": _busNoController.text,
-      };
 
-      var body;
+
+      var bodyRoutes;
+      var bodyPoints;
       print("body");
-      print(latlonFromMap);
-      if (latlonFromMap.length != 0) {
+
+      if (latlonFromMap.length >= 2) {
+        var addRoute = {
+          "name": _busRouteController.text,
+          "number": _busNoController.text,
+        };
+
+        var res = await CallApi().postRoutes(addRoute, 'addRoute');
+        bodyRoutes = json.decode(res.body);
+
         for (var data in latlonFromMap) {
           print(data);
           var addPoints = {
-            "name": "manipaynew",
+            "name": "J to USA",
             "time": data['time'],
             "latitude": data['lat'],
             "longitude": data['long'],
-            "route_id": 2, // this would be dynamic - after routes added ID automatically need to assign
+            "route_id": bodyRoutes['message']['id'],  // this would be dynamic - after routes added ID automatically need to assign
           };
+
           var res = await CallApi().postPoints(addPoints, 'addPoint');
-          body = json.decode(res.body);
-          
+          bodyPoints = json.decode(res.body);
         }
-        if(body['errorMessage'] == false){
-            scaffoldKey.currentState.showSnackBar(
-               SnackBar(
-                content: Text("${body['message']}", style: TextStyle(color: Colors.white),),
-                backgroundColor: Colors.green,
+
+        if (bodyPoints['errorMessage'] == false) {
+          scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text(
+                "${bodyPoints['message']}",
+                style: TextStyle(color: Colors.white),
               ),
-            );
-          }
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
         latlonFromMap.clear();
         _busRouteController.clear();
         _busNoController.clear();
       }
-      print(body);
+      print(bodyPoints);
 
-      // if (body['token'] != null) {
-      //   SharedPreferences localStorage = await SharedPreferences.getInstance();
-      //   var token = body['token'];
-      //   localStorage.setString('token', token);
-      //   print(body);
-      //   Navigator.of(context).pushReplacement(
-      //     MaterialPageRoute(builder: (BuildContext context) => MainMenu()),
-      //   );
-      // } else {
-      //   print(body['error']);
-      // }
     } catch (e) {
       print(e);
     }
@@ -440,10 +412,11 @@ class _NewHomeState extends State<NewHome> {
                   color: Colors.blue,
                   textColor: Colors.white,
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()),
-                    );
+                    _awaitReturnValueFromSearchMap(context);
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => HomeScreen()),
+                    // );
                   },
                   child: Text("Add Location By Search"),
                 ),
@@ -462,7 +435,31 @@ class _NewHomeState extends State<NewHome> {
         MaterialPageRoute(
           builder: (context) => GoogleMapScreen(),
         ));
-    print(startPointCheck);
+    print(result);
+    if (result['lat'] != null) {
+      setState(() {
+        latfromMap = result['lat'];
+        lonfromMap = result['lon'];
+        latlonFromMap.add({
+          "index": latlonFromMap.length + 1,
+          "lat": latfromMap,
+          "long": lonfromMap,
+          "time": timefromMap
+        });
+      });
+    }
+    // close the popup
+    Navigator.of(context).pop();
+    print(latlonFromMap);
+  }
+
+  void _awaitReturnValueFromSearchMap(BuildContext context) async {
+    // start the SecondScreen and wait for it to finish with a result
+    final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomeScreen(),
+        ));
     print(result);
     if (result['lat'] != null) {
       setState(() {

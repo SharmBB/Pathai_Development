@@ -31,6 +31,9 @@ class _HomeScreenState extends State<HomeScreen> {
   final _locationController = TextEditingController();
   var test = 'sharmilan';
 
+  double latfromMap ;
+  double lonfromMap ;
+
   @override
   void initState() {
     final applicationBloc =
@@ -102,10 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Options()),
-              );
+              _sendDataBack(context);
             },
           ),
           leadingWidth: 70,
@@ -262,4 +262,10 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+  void _sendDataBack(BuildContext context) {
+    // Navigator.pop(context, textToSendBack);
+    Navigator.pop(context, {"lat" : latfromMap , "lon" : lonfromMap});
+  }
+
 }
