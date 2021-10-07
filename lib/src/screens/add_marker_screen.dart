@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:places_autocomplete/Utils/Constraints.dart';
-import 'package:places_autocomplete/src/screens/newhome.dart';
+import 'package:places_autocomplete/src/screens/routes/addRoute.dart';
 import 'package:places_autocomplete/src/screens/options.dart';
 
 class GoogleMapScreen extends StatefulWidget {
@@ -40,28 +40,18 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
           actions: [
             IconButton(
               icon: Icon(Icons.circle, color: Colors.white),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Options()),
-                );
-              },
+              onPressed: () { },
             ),
             IconButton(
               icon: Icon(Icons.notifications_rounded, color: Colors.white),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Options()),
-                );
-              },
+              onPressed: () { },
             ),
             IconButton(
               icon: Icon(Icons.settings, color: Colors.white),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => NewHome()),
+                  MaterialPageRoute(builder: (context) => AddRoute()),
                 );
               },
             ),

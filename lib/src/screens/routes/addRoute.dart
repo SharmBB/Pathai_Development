@@ -6,17 +6,15 @@ import 'package:intl/intl.dart';
 import 'package:places_autocomplete/Utils/Constraints.dart';
 import 'package:places_autocomplete/src/api/api.dart';
 import 'package:places_autocomplete/src/screens/add_marker_screen.dart';
-import 'package:places_autocomplete/src/screens/home_screen.dart';
-import 'package:places_autocomplete/src/screens/options.dart';
 
-class NewHome extends StatefulWidget {
-  const NewHome({key}) : super(key: key);
+class AddRoute extends StatefulWidget {
+  const AddRoute({key}) : super(key: key);
 
   @override
-  _NewHomeState createState() => _NewHomeState();
+  _AddRouteState createState() => _AddRouteState();
 }
 
-class _NewHomeState extends State<NewHome> {
+class _AddRouteState extends State<AddRoute> {
   List latlonFromMap = [];
   bool reload = false;
   bool _isLoading = false;
@@ -458,8 +456,9 @@ class _NewHomeState extends State<NewHome> {
     final result = await Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => HomeScreen(),
-        ));
+          // builder: (context) => HomeScreen(),
+        )
+        );
     print(result);
     if (result['lat'] != null) {
       setState(() {
