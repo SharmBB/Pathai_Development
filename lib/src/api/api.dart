@@ -27,6 +27,13 @@ class CallApi {
       headers: _setHeaders(),
     );
   }
+  getRoutes(apiUrl) async {
+    var fullUrl = Uri.parse(_urlAuth + apiUrl);
+    return await http.get(
+      fullUrl,
+      headers: _setHeaders(),
+    );
+  }
   getPoints(apiUrl) async {
     var fullUrl = Uri.parse(_urlAuth + apiUrl);
     return await http.get(

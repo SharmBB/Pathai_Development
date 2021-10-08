@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:places_autocomplete/Utils/Constraints.dart';
 import 'package:places_autocomplete/src/screens/drawer.dart';
 import 'package:places_autocomplete/src/screens/routes/AddRoute.dart';
+import 'package:places_autocomplete/src/screens/routes/ViewRoutes.dart';
 
 class LandingPage extends StatefulWidget {
   LandingPage({Key key}) : super(key: key);
@@ -26,40 +27,71 @@ class _LandingPageState extends State<LandingPage> {
         child: Drawer(
           child: ListView(
             children: <Widget>[
-              DrawerHeader(
-            decoration: BoxDecoration(),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('PAATHAI APP',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18.0,
-                    )),
-                ClipOval(
-                  child: Image.asset(
-                    'assets/images/1.jpeg',
-                    fit: BoxFit.cover,
-                    width: 70,
-                    height: 70,
-                  ),
+              Padding(
+                padding: const EdgeInsets.symmetric( vertical: 20, horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('PAATHAI APP',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 15.0,
+                        )),
+                    ClipOval(
+                      child: Image.asset(
+                        'assets/images/1.jpeg',
+                        fit: BoxFit.cover,
+                        width: 60,
+                        height: 60,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
               ListTile(
-                leading: Icon(Icons.change_history),
-                title: Text('Change history'),
+                leading: Icon(Icons.people,color: kPrimaryGreenColor),
+                title: Text('Dashboard'),
                 onTap: () {
-                  Navigator.pop(context); 
+                  // Navigator.pop(context);
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => AddRoute()),
+                  // );
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.timeline,color: kPrimaryGreenColor),
+                title: Text('Routes'),
+                onTap: () {
+                  Navigator.pop(context);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => AddRoute()
-                        ),
+                    MaterialPageRoute(builder: (context) => AddRoute()),
                   );
                 },
-              )
+              ),
+              ListTile(
+                leading: Icon(Icons.business,color: kPrimaryGreenColor),
+                title: Text('Cities'),
+                onTap: () {
+                  // Navigator.pop(context);
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => AddRoute()),
+                  // );
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.directions_bus_sharp,color: kPrimaryGreenColor),
+                title: Text('Busses'),
+                onTap: () {
+                  // Navigator.pop(context);
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => AddRoute()),
+                  // );
+                },
+              ),
             ],
           ),
         ),
@@ -122,14 +154,7 @@ class _LandingPageState extends State<LandingPage> {
                                         color: kPrimaryGreenColor,
                                         size: 40,
                                       ),
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              // builder: (context) => MyApp()
-                                              ),
-                                        );
-                                      },
+                                      onPressed: () {},
                                     ),
                                     Padding(
                                         padding: const EdgeInsets.only(
@@ -166,7 +191,14 @@ class _LandingPageState extends State<LandingPage> {
                             constraints:
                                 BoxConstraints.tightFor(width: 200, height: 50),
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => JRoute()
+                                              ),
+                                        );
+                              },
                               child: Text(
                                 'New User',
                                 style: TextStyle(
