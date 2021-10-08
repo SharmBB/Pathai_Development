@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:places_autocomplete/Utils/Constraints.dart';
-import 'package:places_autocomplete/src/screens/routes/addRoute.dart';
-
+import 'package:places_autocomplete/src/screens/drawer.dart';
+import 'package:places_autocomplete/src/screens/routes/AddRoute.dart';
 
 class LandingPage extends StatefulWidget {
   LandingPage({Key key}) : super(key: key);
@@ -16,8 +16,54 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       key: _scaffoldKey,
+      // drawer: NavBar(),
+      drawer: Container(
+        width: width * 0.7,
+        child: Drawer(
+          child: ListView(
+            children: <Widget>[
+              DrawerHeader(
+            decoration: BoxDecoration(),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('PAATHAI APP',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18.0,
+                    )),
+                ClipOval(
+                  child: Image.asset(
+                    'assets/images/1.jpeg',
+                    fit: BoxFit.cover,
+                    width: 70,
+                    height: 70,
+                  ),
+                ),
+              ],
+            ),
+          ),
+              ListTile(
+                leading: Icon(Icons.change_history),
+                title: Text('Change history'),
+                onTap: () {
+                  Navigator.pop(context); 
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AddRoute()
+                        ),
+                  );
+                },
+              )
+            ],
+          ),
+        ),
+      ),
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.notes, color: Colors.white),
@@ -27,15 +73,15 @@ class _LandingPageState extends State<LandingPage> {
         actions: [
           IconButton(
             icon: Icon(Icons.circle, color: Colors.white),
-            onPressed: () { },
+            onPressed: () {},
           ),
           IconButton(
             icon: Icon(Icons.notifications_rounded, color: Colors.white),
-            onPressed: () { },
+            onPressed: () {},
           ),
           IconButton(
             icon: Icon(Icons.settings, color: Colors.white),
-            onPressed: () { },
+            onPressed: () {},
           ),
         ],
         backgroundColor: kPrimaryGreenColor,
@@ -57,6 +103,7 @@ class _LandingPageState extends State<LandingPage> {
             mainAxisSpacing: 20,
             children: <Widget>[
               Card(
+                  elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15.0),
                   ),
@@ -87,42 +134,29 @@ class _LandingPageState extends State<LandingPage> {
                                     Padding(
                                         padding: const EdgeInsets.only(
                                             top: 10, left: 15, bottom: 0),
-                                        child: Text('Users',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 16.0,
-                                                fontWeight: FontWeight.bold))),
+                                        child: Text('Users', style: cardTitle)),
                                   ],
                                 ),
                                 Padding(
                                     padding: const EdgeInsets.only(
-                                        top: 40, left: 10, right: 10),
+                                        top: 25, left: 10, right: 10),
                                     child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
                                           Container(
                                             child: Text('45',
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 30.0,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
+                                                style: cardNumberText),
                                           ),
                                           Container(
                                             child: Text('Text',
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 20.0,
-                                                )),
+                                                style: cardSubTitle),
                                           ),
                                           Container(
-                                            margin: EdgeInsets.only(left: 2),
-                                            child: Text('More Text',
-                                                style: TextStyle(
-                                                  color: Colors.grey,
-                                                  fontSize: 15.0,
-                                                )),
+                                            margin: EdgeInsets.only(top: 5),
+                                            child: Text(
+                                                'More Text'.toUpperCase(),
+                                                style: cardMoreText),
                                           ),
                                         ])),
                               ])),
@@ -143,6 +177,7 @@ class _LandingPageState extends State<LandingPage> {
                               ),
                               style: ElevatedButton.styleFrom(
                                 primary: kPrimaryGreenColor,
+                                elevation: 0,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.only(
                                   bottomRight: Radius.circular(15),
@@ -154,6 +189,7 @@ class _LandingPageState extends State<LandingPage> {
                     ],
                   )),
               Card(
+                  elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15.0),
                   ),
@@ -168,7 +204,7 @@ class _LandingPageState extends State<LandingPage> {
                                   children: [
                                     IconButton(
                                       icon: Icon(
-                                        Icons.directions,
+                                        Icons.timeline,
                                         color: kPrimaryGreenColor,
                                         size: 40,
                                       ),
@@ -184,42 +220,30 @@ class _LandingPageState extends State<LandingPage> {
                                     Padding(
                                         padding: const EdgeInsets.only(
                                             top: 10, left: 15, bottom: 0),
-                                        child: Text('Routes',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 16.0,
-                                                fontWeight: FontWeight.bold))),
+                                        child:
+                                            Text('Routes', style: cardTitle)),
                                   ],
                                 ),
                                 Padding(
                                     padding: const EdgeInsets.only(
-                                        top: 40, left: 10, right: 10),
+                                        top: 25, left: 10, right: 10),
                                     child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
                                           Container(
                                             child: Text('45',
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 30.0,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
+                                                style: cardNumberText),
                                           ),
                                           Container(
                                             child: Text('Text',
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 20.0,
-                                                )),
+                                                style: cardSubTitle),
                                           ),
                                           Container(
-                                            margin: EdgeInsets.only(left: 2),
-                                            child: Text('More Text',
-                                                style: TextStyle(
-                                                  color: Colors.grey,
-                                                  fontSize: 15.0,
-                                                )),
+                                            margin: EdgeInsets.only(top: 5),
+                                            child: Text(
+                                                'More Text'.toUpperCase(),
+                                                style: cardMoreText),
                                           ),
                                         ])),
                               ])),
@@ -233,8 +257,7 @@ class _LandingPageState extends State<LandingPage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => AddRoute()
-                                      ),
+                                      builder: (context) => AddRoute()),
                                 );
                               },
                               child: Text(
@@ -247,6 +270,7 @@ class _LandingPageState extends State<LandingPage> {
                               ),
                               style: ElevatedButton.styleFrom(
                                 primary: kPrimaryGreenColor,
+                                elevation: 0,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.only(
                                   bottomRight: Radius.circular(15),
@@ -258,6 +282,7 @@ class _LandingPageState extends State<LandingPage> {
                     ],
                   )),
               Card(
+                  elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15.0),
                   ),
@@ -281,42 +306,30 @@ class _LandingPageState extends State<LandingPage> {
                                     Padding(
                                         padding: const EdgeInsets.only(
                                             top: 10, left: 15, bottom: 0),
-                                        child: Text('Cities',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 16.0,
-                                                fontWeight: FontWeight.bold))),
+                                        child:
+                                            Text('Cities', style: cardTitle)),
                                   ],
                                 ),
                                 Padding(
                                     padding: const EdgeInsets.only(
-                                        top: 40, left: 10, right: 10),
+                                        top: 25, left: 10, right: 10),
                                     child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
                                           Container(
                                             child: Text('45',
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 30.0,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
+                                                style: cardNumberText),
                                           ),
                                           Container(
                                             child: Text('Text',
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 20.0,
-                                                )),
+                                                style: cardSubTitle),
                                           ),
                                           Container(
-                                            margin: EdgeInsets.only(left: 2),
-                                            child: Text('More Text',
-                                                style: TextStyle(
-                                                  color: Colors.grey,
-                                                  fontSize: 15.0,
-                                                )),
+                                            margin: EdgeInsets.only(top: 5),
+                                            child: Text(
+                                                'More Text'.toUpperCase(),
+                                                style: cardMoreText),
                                           ),
                                         ])),
                               ])),
@@ -337,6 +350,7 @@ class _LandingPageState extends State<LandingPage> {
                               ),
                               style: ElevatedButton.styleFrom(
                                 primary: kPrimaryGreenColor,
+                                elevation: 0,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.only(
                                   bottomRight: Radius.circular(15),
@@ -348,93 +362,83 @@ class _LandingPageState extends State<LandingPage> {
                     ],
                   )),
               Card(
+                  elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15.0),
                   ),
                   child: Stack(
                     children: <Widget>[
                       Padding(
-                          padding: const EdgeInsets.only(left: 10, right: 10),
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    IconButton(
-                                      icon: Icon(
-                                        Icons.directions_bus_sharp,
-                                        color: kPrimaryGreenColor,
-                                        size: 40,
-                                      ),
-                                      onPressed: () {},
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.directions_bus_sharp,
+                                      color: kPrimaryGreenColor,
+                                      size: 40,
                                     ),
-                                    Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 10, left: 15, bottom: 0),
-                                        child: Text('Busses',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 16.0,
-                                                fontWeight: FontWeight.bold))),
-                                  ],
-                                ),
-                                Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 40, left: 10, right: 10),
-                                    child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            child: Text('45',
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 30.0,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                          ),
-                                          Container(
-                                            child: Text('Text',
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 20.0,
-                                                )),
-                                          ),
-                                          Container(
-                                            margin: EdgeInsets.only(left: 2),
-                                            child: Text('More Text',
-                                                style: TextStyle(
-                                                  color: Colors.grey,
-                                                  fontSize: 15.0,
-                                                )),
-                                          ),
-                                        ])),
-                              ])),
-                      Align(
-                          alignment: Alignment.bottomLeft,
-                          child: ConstrainedBox(
-                            constraints:
-                                BoxConstraints.tightFor(width: 200, height: 50),
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              child: Text(
-                                'New Bus',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                    onPressed: () {},
+                                  ),
+                                  Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 10, left: 15, bottom: 0),
+                                      child: Text('Busses', style: cardTitle)),
+                                ],
                               ),
-                              style: ElevatedButton.styleFrom(
-                                primary: kPrimaryGreenColor,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                  bottomRight: Radius.circular(15),
-                                  bottomLeft: Radius.circular(15),
-                                )),
+                              Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 25, left: 10, right: 10),
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          child:
+                                              Text('45', style: cardNumberText),
+                                        ),
+                                        Container(
+                                          child:
+                                              Text('Text', style: cardSubTitle),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(top: 5),
+                                          child: Text('More Text'.toUpperCase(),
+                                              style: cardMoreText),
+                                        ),
+                                      ])),
+                            ]),
+                      ),
+                      Align(
+                        alignment: Alignment.bottomLeft,
+                        child: ConstrainedBox(
+                          constraints:
+                              BoxConstraints.tightFor(width: 200, height: 50),
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            child: Text(
+                              'New Bus',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                          )),
+                            style: ElevatedButton.styleFrom(
+                              primary: kPrimaryGreenColor,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(15),
+                                bottomLeft: Radius.circular(15),
+                              )),
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   )),
             ],

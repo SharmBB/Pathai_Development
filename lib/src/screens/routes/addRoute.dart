@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:places_autocomplete/Utils/Constraints.dart';
 import 'package:places_autocomplete/src/api/api.dart';
-import 'package:places_autocomplete/src/screens/add_marker_screen.dart';
+import 'package:places_autocomplete/src/screens/map/PickerMap.dart';
 
 class AddRoute extends StatefulWidget {
   const AddRoute({key}) : super(key: key);
@@ -35,94 +35,117 @@ class _AddRouteState extends State<AddRoute> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-          key: scaffoldKey,
-          body: SingleChildScrollView(
-            child: Container(
-              child: Form(
-                key: formKey,
-                autovalidate: _validate,
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      busRouteInput(),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      busNoInput(),
-                      SizedBox(
-                        height: 40,
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            'Additional Routes',
+    return Scaffold(
+        key: scaffoldKey,
+        appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        leadingWidth: 70,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.circle, color: Colors.white),
+            onPressed: () { },
+          ),
+          IconButton(
+            icon: Icon(Icons.notifications_rounded, color: Colors.white),
+            onPressed: () { },
+          ),
+          IconButton(
+            icon: Icon(Icons.settings, color: Colors.white),
+            onPressed: () { },
+          ),
+        ],
+        backgroundColor: kPrimaryGreenColor,
+        elevation: 0,
+      ),
+        body: SingleChildScrollView(
+          child: Container(
+            child: Form(
+              key: formKey,
+              autovalidate: _validate,
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    busRouteInput(),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    busNoInput(),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          'Additional Routes',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700, fontSize: 16),
+                        ),
+                        Spacer(),
+                        GestureDetector(
+                          onTap: () {
+                            _showMyDialog();
+                          },
+                          child: Container(
+                            width: 22,
+                            height: 22,
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Icon(
+                              Icons.add,
+                              color: Colors.white,
+                              size: 15,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    latlonFromMap.length >= 2
+                        ? Text("")
+                        : Text(
+                            '*Minimum 2 (Start & End) points required',
                             style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 16),
+                                color: Colors.red,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14),
                           ),
-                          Spacer(),
-                          GestureDetector(
-                            onTap: () {
-                              _showMyDialog();
-                            },
-                            child: Container(
-                              width: 22,
-                              height: 22,
-                              decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Icon(
-                                Icons.add,
-                                color: Colors.white,
-                                size: 15,
-                              ),
-                            ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    reload
+                        ? Text(" ")
+                        : Column(
+                            children: [
+                              for (var item in latlonFromMap)
+                                latLonListView(item),
+                            ],
                           ),
-                        ],
-                      ),
-                      latlonFromMap.length >= 2
-                          ? Text("")
-                          : Text(
-                              '*Minimum 2 (Start & End) points required',
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14),
+                    Center(
+                      child: _isLoading
+                          ? CupertinoActivityIndicator()
+                          : RaisedButton(
+                              color: kPrimaryGreenColor,
+                              textColor: Colors.white,
+                              onPressed: () {
+                                onClick();
+                              },
+                              child: Text("Add Routes"),
                             ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      reload
-                          ? Text(" ")
-                          : Column(
-                              children: [
-                                for (var item in latlonFromMap)
-                                  latLonListView(item),
-                              ],
-                            ),
-                      Center(
-                        child: _isLoading
-                            ? CupertinoActivityIndicator()
-                            : RaisedButton(
-                                color: kPrimaryGreenColor,
-                                textColor: Colors.white,
-                                onPressed: () {
-                                  onClick();
-                                },
-                                child: Text("Add Routes"),
-                              ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
-          )),
-    );
+          ),
+        ));
   }
 
   latLonListView(item) {
@@ -431,7 +454,7 @@ class _AddRouteState extends State<AddRoute> {
     final result = await Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => GoogleMapScreen(),
+          builder: (context) => PickerMap(),
         ));
     print(result);
     if (result['lat'] != null) {

@@ -2,12 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:places_autocomplete/src/blocs/application_bloc.dart';
+import 'package:flutter/services.dart';
 import 'package:places_autocomplete/src/screens/LandingPage.dart';
-import 'package:places_autocomplete/src/screens/home_screen.dart';
-import 'package:places_autocomplete/src/screens/routes/addRoute.dart';
-import 'package:places_autocomplete/src/screens/route_add.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 
 void main() {
   HttpOverrides.global = new MyHttpOverrides();
@@ -31,6 +28,10 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: Colors.blue,

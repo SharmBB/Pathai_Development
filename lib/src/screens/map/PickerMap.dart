@@ -3,15 +3,14 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:places_autocomplete/Utils/Constraints.dart';
-import 'package:places_autocomplete/src/screens/routes/addRoute.dart';
-import 'package:places_autocomplete/src/screens/options.dart';
+import 'package:places_autocomplete/src/screens/routes/AddRoute.dart';
 
-class GoogleMapScreen extends StatefulWidget {
+class PickerMap extends StatefulWidget {
   @override
-  _GoogleMapScreenState createState() => _GoogleMapScreenState();
+  _PickerMapState createState() => _PickerMapState();
 }
 
-class _GoogleMapScreenState extends State<GoogleMapScreen> {
+class _PickerMapState extends State<PickerMap> {
   GoogleMapController mapController;
 
   final LatLng _center = const LatLng(28.535517, 77.391029);
@@ -48,12 +47,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
             ),
             IconButton(
               icon: Icon(Icons.settings, color: Colors.white),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AddRoute()),
-                );
-              },
+              onPressed: () { },
             ),
           ],
           backgroundColor: kPrimaryGreenColor,
