@@ -41,6 +41,14 @@ class CallApi {
       headers: _setHeaders(),
     );
   }
+  deleteRoutes(data,apiUrl) async {
+    var fullUrl = Uri.parse(_urlAuth + apiUrl);
+    return await http.delete(
+      fullUrl,
+      body: jsonEncode(data),
+      headers: _setHeaders(),
+    );
+  }
 
   // getData(apiUrl) async {
   //    var fullUrl = _url + apiUrl + await _getToken();

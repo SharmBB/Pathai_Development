@@ -140,7 +140,8 @@ class _JRouteState extends State<JRoute> {
                                                                       .only(
                                                                   bottom: 10.0,
                                                                   top: 10.0),
-                                                          child: Text("${_RoutesFromDB[0][index]['name']}",
+                                                          child: Text(
+                                                              "${_RoutesFromDB[0][index]['name']}",
                                                               style: TextStyle(
                                                                   color: Colors
                                                                       .black,
@@ -174,13 +175,8 @@ class _JRouteState extends State<JRoute> {
                                                         },
                                                         onSelected: (value) {
                                                           if (value == 1) {
-                                                            showDialog<String>(
-                                                                context:
-                                                                    context,
-                                                                builder: (BuildContext
-                                                                        context) =>
-                                                                    dialog(
-                                                                        context));
+                                                            _valueFromDelete(context);
+
                                                           } else if (value ==
                                                               2) {
                                                             // Navigator.push(
@@ -322,8 +318,7 @@ class _JRouteState extends State<JRoute> {
                         // _apiGetPoints();
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => AddRoute()),
+                          MaterialPageRoute(builder: (context) => AddRoute()),
                         );
                       },
                       child: Row(
@@ -357,97 +352,91 @@ class _JRouteState extends State<JRoute> {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(15.0))),
       contentPadding: EdgeInsets.zero,
-      content: Container(
-        width: width * 0.3,
-        height: 170,
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+      content: Column(mainAxisSize: MainAxisSize.min, children: [
+        Padding(
+            padding: const EdgeInsets.only(
+                bottom: 10.0, top: 30.0, left: 20.0, right: 20.0),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Delete Route?',
+                    style: TextStyle(fontSize: 18.0, color: Colors.black),
+                  )),
               Padding(
                   padding: const EdgeInsets.only(
-                      bottom: 10.0, top: 20.0, left: 20.0, right: 20.0),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Delete Route?',
-                              style: TextStyle(
-                                  fontSize: 18.0, color: Colors.black),
-                            )),
-                        Padding(
-                            padding: const EdgeInsets.only(
-                              top: 10.0,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                TextButton(
-                                  style: ButtonStyle(
-                                    foregroundColor:
-                                        MaterialStateProperty.all(Colors.grey),
-                                  ),
-                                  onPressed: () {},
-                                  child: const Text(
-                                    'No',
-                                    style: TextStyle(
-                                      fontSize: 14.0,
-                                    ),
-                                  ),
-                                ),
-                                TextButton(
-                                  style: ButtonStyle(
-                                    foregroundColor: MaterialStateProperty.all(
-                                        kPrimaryGreenColor),
-                                  ),
-                                  onPressed: () =>
-                                      Navigator.pop(context, 'Yes'),
-                                  child: const Text(
-                                    'Yes',
-                                    textAlign: TextAlign.right,
-                                    style: TextStyle(
-                                      fontSize: 14.0,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ))
-                      ])),
-              Align(
-                  alignment: Alignment.bottomLeft,
-                  child: ConstrainedBox(
-                    constraints:
-                        BoxConstraints.tightFor(width: 400, height: 60),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => JRoute()),
-                        );
-                      },
-                      child: Text(
-                        'Cancel',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
+                    top: 10.0,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      TextButton(
+                        style: ButtonStyle(
+                          foregroundColor:
+                              MaterialStateProperty.all(Colors.grey),
                         ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        primary: kPrimaryGreenColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(15),
-                            bottomLeft: Radius.circular(15),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          'No',
+                          style: TextStyle(
+                            fontSize: 14.0,
                           ),
                         ),
                       ),
+                      TextButton(
+                        style: ButtonStyle(
+                          foregroundColor:
+                              MaterialStateProperty.all(Colors.red),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context, 'Yes');
+                        },
+                        child: const Text(
+                          'Yes',
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontSize: 14.0,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ))
+            ])),
+        Align(
+            alignment: Alignment.bottomLeft,
+            child: ConstrainedBox(
+              constraints: BoxConstraints.tightFor(width: 400, height: 60),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => JRoute()),
+                  // );
+                },
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16.0,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: kPrimaryGreenColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(15),
+                      bottomLeft: Radius.circular(15),
                     ),
-                  )),
-            ]),
-      ),
+                  ),
+                ),
+              ),
+            )),
+      ]),
     );
   }
 
@@ -471,5 +460,12 @@ class _JRouteState extends State<JRoute> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  void _valueFromDelete(BuildContext context) async {
+    // start the SecondScreen and wait for it to finish with a result
+    final result = await showDialog<String>(
+        context: context, builder: (BuildContext context) => dialog(context));
+    print(result);
   }
 }
