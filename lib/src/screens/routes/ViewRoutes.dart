@@ -175,7 +175,9 @@ class _JRouteState extends State<JRoute> {
                                                         },
                                                         onSelected: (value) {
                                                           if (value == 1) {
-                                                            _valueFromDelete(context);
+                                                            showDialog<String>(
+                                                                context: context, builder: (BuildContext context) => dialog(context,_RoutesFromDB[0][index]['id']));
+                                                            // print(result);
 
                                                           } else if (value ==
                                                               2) {
@@ -346,7 +348,7 @@ class _JRouteState extends State<JRoute> {
         ]));
   }
 
-  AlertDialog dialog(BuildContext context) {
+  AlertDialog dialog(BuildContext context, deleteId) {
     var width = MediaQuery.of(context).size.width;
     return AlertDialog(
       shape: RoundedRectangleBorder(
@@ -393,7 +395,9 @@ class _JRouteState extends State<JRoute> {
                               MaterialStateProperty.all(Colors.red),
                         ),
                         onPressed: () {
-                          Navigator.pop(context, 'Yes');
+                          Navigator.pop(context);
+                          deleteRoutes(deleteId);
+                          // print(deleteId);
                         },
                         child: const Text(
                           'Yes',
@@ -445,6 +449,7 @@ class _JRouteState extends State<JRoute> {
       _isLoading = true;
     });
     try {
+      _RoutesFromDB.clear();
       var bodyRoutes;
       var res = await CallApi().getRoutes('getRoutes');
       bodyRoutes = json.decode(res.body);
@@ -462,10 +467,38 @@ class _JRouteState extends State<JRoute> {
     });
   }
 
-  void _valueFromDelete(BuildContext context) async {
-    // start the SecondScreen and wait for it to finish with a result
-    final result = await showDialog<String>(
-        context: context, builder: (BuildContext context) => dialog(context));
-    print(result);
+    void deleteRoutes(id) async {
+    try {
+      var deleteRoute = {
+          "id": id
+        };
+      var bodyRoutes;
+      var res = await CallApi().deleteRoutes(deleteRoute, 'deleteRouteAdmin');
+      bodyRoutes = json.decode(res.body);
+      print(bodyRoutes);
+
+          if(bodyRoutes['errorMessage'] == false){
+              _scaffoldKey.currentState.showSnackBar(
+              SnackBar(
+                content: Text(
+                  "${bodyRoutes['message']}",
+                  style: TextStyle(color: Colors.white),
+                ),
+                backgroundColor: Colors.green,
+              ),
+            );
+             _apiGetPoints();
+          }
+
+    } catch (e) {
+      print(e);
+    }
   }
+
+  // void _valueFromDelete(BuildContext context) async {
+  //   // start the SecondScreen and wait for it to finish with a result
+  //   final result = await showDialog<String>(
+  //       context: context, builder: (BuildContext context) => dialog(context, 2));
+  //   print(result);
+  // }
 }
