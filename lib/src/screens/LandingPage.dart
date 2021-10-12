@@ -122,7 +122,7 @@ class _LandingPageState extends State<LandingPage> {
                                 Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => JRoute()
+                                              builder: (context) => ViewRoutes()
                                               ),
                                         );
                               },
@@ -216,7 +216,7 @@ class _LandingPageState extends State<LandingPage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => AddRoute()),
+                                      builder: (context) => ViewRoutes()),
                                 );
                               },
                               child: Text(

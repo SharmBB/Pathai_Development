@@ -6,14 +6,14 @@ import 'package:places_autocomplete/Utils/Constraints.dart';
 import 'package:places_autocomplete/src/api/api.dart';
 import 'package:places_autocomplete/src/screens/routes/AddRoute.dart';
 
-class JRoute extends StatefulWidget {
-  JRoute({Key key}) : super(key: key);
+class ViewRoutes extends StatefulWidget {
+  ViewRoutes({Key key}) : super(key: key);
 
   @override
-  _JRouteState createState() => _JRouteState();
+  _ViewRoutesState createState() => _ViewRoutesState();
 }
 
-class _JRouteState extends State<JRoute> {
+class _ViewRoutesState extends State<ViewRoutes> {
   bool _isLoading = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -100,7 +100,11 @@ class _JRouteState extends State<JRoute> {
                 //   height: 20,
                 // ),
                 !_isLoading
-                    ? Expanded(
+                    ? _RoutesFromDB[0].length == 0 ? 
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 20),
+                                      child: Text("No routes available"),
+                                    ) : Expanded(
                         child: Padding(
                           padding: const EdgeInsets.only(top: 20.0, bottom: 90),
                           child: ListView.builder(
@@ -294,7 +298,8 @@ class _JRouteState extends State<JRoute> {
                                                   ],
                                                 ),
                                               ]),
-                                        )),
+                                        ),
+                                        ),
                                   )),
                         ),
                       )
@@ -419,7 +424,7 @@ class _JRouteState extends State<JRoute> {
                   Navigator.pop(context);
                   // Navigator.push(
                   //   context,
-                  //   MaterialPageRoute(builder: (context) => JRoute()),
+                  //   MaterialPageRoute(builder: (context) => ViewRoutes()),
                   // );
                 },
                 child: Text(
