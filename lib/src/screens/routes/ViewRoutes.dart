@@ -106,7 +106,7 @@ class _ViewRoutesState extends State<ViewRoutes> {
                                       child: Text("No routes available"),
                                     ) : Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.only(top: 20.0, bottom: 90),
+                          padding: const EdgeInsets.only(top: 20.0, bottom: 80),
                           child: ListView.builder(
                               itemCount: _RoutesFromDB[0].length,
                               itemBuilder: (context, index) => Padding(
@@ -315,11 +315,11 @@ class _ViewRoutesState extends State<ViewRoutes> {
                 alignment: Alignment.bottomCenter,
                 child: Padding(
                   padding: const EdgeInsets.only(
-                    bottom: 20,
+                    bottom: 15,
                   ),
                   child: ConstrainedBox(
                     constraints:
-                        BoxConstraints.tightFor(width: width * 0.9, height: 60),
+                        BoxConstraints.tightFor(width: width * 0.9, height: 50),
                     child: ElevatedButton(
                       onPressed: () {
                         // _apiGetPoints();
