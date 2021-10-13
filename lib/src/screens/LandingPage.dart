@@ -120,12 +120,12 @@ class _LandingPageState extends State<LandingPage> {
                                 BoxConstraints.tightFor(width: 200, height: 50),
                             child: ElevatedButton(
                               onPressed: () {
-                                Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => ViewRoutes()
-                                              ),
-                                        );
+                                // Navigator.push(
+                                //           context,
+                                //           MaterialPageRoute(
+                                //               builder: (context) => ViewRoutes()
+                                //               ),
+                                //         );
                               },
                               child: Text(
                                 'New User',
@@ -169,12 +169,6 @@ class _LandingPageState extends State<LandingPage> {
                                         size: 40,
                                       ),
                                       onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              // builder: (context) => MyApp()
-                                              ),
-                                        );
                                       },
                                     ),
                                     Padding(
@@ -301,11 +295,11 @@ class _LandingPageState extends State<LandingPage> {
                                 BoxConstraints.tightFor(width: 200, height: 50),
                             child: ElevatedButton(
                               onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SearchMap()),
-                                );
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //       builder: (context) => SearchMap()),
+                                // );
                               },
                               child: Text(
                                 'New City',

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:places_autocomplete/Utils/Constraints.dart';
 import 'package:places_autocomplete/src/screens/LandingPage.dart';
 import 'package:places_autocomplete/src/screens/routes/AddRoute.dart';
+import 'package:places_autocomplete/src/screens/routes/ViewRoutes.dart';
 
 class DrawerMenu extends StatelessWidget {
   const DrawerMenu({
@@ -54,7 +55,7 @@ class DrawerMenu extends StatelessWidget {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AddRoute()),
+                  MaterialPageRoute(builder: (context) => ViewRoutes()),
                 );
               },
             ),
