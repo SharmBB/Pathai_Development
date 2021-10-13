@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:places_autocomplete/Utils/Constraints.dart';
 import 'package:places_autocomplete/src/parts/drawer.dart';
 import 'package:places_autocomplete/src/parts/drawerByKithu.dart';
+import 'package:places_autocomplete/src/screens/map/SearchMap.dart';
 import 'package:places_autocomplete/src/screens/routes/AddRoute.dart';
 import 'package:places_autocomplete/src/screens/routes/ViewRoutes.dart';
 
@@ -290,7 +291,8 @@ class _LandingPageState extends State<LandingPage> {
                                                 'More Text'.toUpperCase(),
                                                 style: cardMoreText),
                                           ),
-                                        ])),
+                                        ]),
+                                  ),
                               ])),
                       Align(
                           alignment: Alignment.bottomLeft,
@@ -298,7 +300,13 @@ class _LandingPageState extends State<LandingPage> {
                             constraints:
                                 BoxConstraints.tightFor(width: 200, height: 50),
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SearchMap()),
+                                );
+                              },
                               child: Text(
                                 'New City',
                                 style: TextStyle(

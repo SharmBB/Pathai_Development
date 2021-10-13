@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:places_autocomplete/Utils/Constraints.dart';
 import 'package:places_autocomplete/src/api/api.dart';
 import 'package:places_autocomplete/src/screens/map/PickerMap.dart';
+import 'package:places_autocomplete/src/screens/map/SearchMap.dart';
 
 class AddRoute extends StatefulWidget {
   const AddRoute({key}) : super(key: key);
@@ -172,7 +173,8 @@ class _AddRouteState extends State<AddRoute> {
                   //   style: TextStyle(fontSize: 15.0),
                   // ),
                   ),
-              Spacer(),
+              // Spacer(),
+              SizedBox(width: 50),
               GestureDetector(
                 onTap: () {
                   setState(() {
@@ -479,9 +481,10 @@ class _AddRouteState extends State<AddRoute> {
     final result = await Navigator.push(
         context,
         MaterialPageRoute(
-          // builder: (context) => HomeScreen(),
+          builder: (context) => SearchMap(),
         )
         );
+    print("result");
     print(result);
     if (result['lat'] != null) {
       setState(() {
