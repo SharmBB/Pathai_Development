@@ -32,7 +32,7 @@ class _PickerMapState extends State<PickerMap> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () {
-              _sendDataBack(context);
+              Navigator.pop(context);
             },
           ),
           leadingWidth: 70,
@@ -54,30 +54,69 @@ class _PickerMapState extends State<PickerMap> {
           elevation: 0,
         ),
       
-      body: Container(
-        child: GoogleMap(
-          onTap: (LatLng latLng) {
-            Marker firsrMarker = Marker(
-              markerId: MarkerId('SomeId'),
-              position: LatLng(latLng.latitude, latLng.longitude),
-              infoWindow: InfoWindow(title: 'The title of the marker'),
-              icon: BitmapDescriptor.defaultMarkerWithHue(
-                  BitmapDescriptor.hueGreen),
-            );
-            customMarkers.add(firsrMarker);
-            //  id=id+1;
-            setState(() {});
-
-            print("Our Lattitute and Longitute is $latLng ");
-            latfromMap = latLng.latitude;
-            lonfromMap = latLng.longitude;
-          },
-          onMapCreated: _onMapCreated,
-          markers: customMarkers.toSet(),
-          initialCameraPosition: CameraPosition(
-            target: _center,
-            zoom: 10.0,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            GoogleMap(
+              onTap: (LatLng latLng) {
+                Marker firsrMarker = Marker(
+                  markerId: MarkerId('SomeId'),
+                  position: LatLng(latLng.latitude, latLng.longitude),
+                  infoWindow: InfoWindow(title: 'The title of the marker'),
+                  icon: BitmapDescriptor.defaultMarkerWithHue(
+                      BitmapDescriptor.hueGreen),
+                );
+                customMarkers.add(firsrMarker);
+                //  id=id+1;
+                setState(() {});
+      
+                print("Our Lattitute and Longitute is $latLng ");
+                latfromMap = latLng.latitude;
+                lonfromMap = latLng.longitude;
+              },
+              onMapCreated: _onMapCreated,
+              markers: customMarkers.toSet(),
+              initialCameraPosition: CameraPosition(
+                target: _center,
+                zoom: 10.0,
+              ),
+            ),
+            SafeArea(
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+              child: RaisedButton(
+                elevation: 0,
+                hoverElevation: 0,
+                focusElevation: 0,
+                highlightElevation: 0,
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                color: kPrimaryGreenColor,
+                disabledColor: Colors.grey,
+                disabledTextColor: Colors.white,
+                onPressed: (latfromMap != null)
+                                  ? () async {
+                                      _sendDataBack(context);
+                                    }
+                                  : null,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(16.0))),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text('Add Points')
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ),
+              ),
+          ],
         ),
       ),
     );
