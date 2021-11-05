@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:places_autocomplete/Utils/Constraints.dart';
 import 'package:places_autocomplete/src/api/api.dart';
 import 'package:places_autocomplete/src/screens/routes/AddRoute.dart';
+import 'package:places_autocomplete/src/screens/routes/UpdateRoute.dart';
 
 class ViewRoutes extends StatefulWidget {
   ViewRoutes({Key key}) : super(key: key);
@@ -183,16 +184,13 @@ class _ViewRoutesState extends State<ViewRoutes> {
                                                                 context: context, builder: (BuildContext context) => dialog(context,_RoutesFromDB[0][index]['id']));
                                                             // print(result);
 
-                                                          } else if (value ==
-                                                              2) {
-                                                            // Navigator.push(
-                                                            //   context,
-                                                            //   MaterialPageRoute(
-                                                            //       builder: (context) =>
-                                                            //           EditRoute(
-                                                            //               title:
-                                                            //                   '')),
-                                                            // );
+                                                          } else if (value == 2) {
+                                                            //pass the Id to update route page
+                                                            UpdateRoute(idForGetRoute: _RoutesFromDB[0][index]['id']);
+                                                            _navigatorUpdateRoute(context, UpdateRoute(idForGetRoute: _RoutesFromDB[0][index]['id']));
+                                                            
+                                                            
+                                                            // print(_RoutesFromDB[0][index]);
                                                           }
                                                         },
                                                         icon: Icon(
@@ -323,10 +321,11 @@ class _ViewRoutesState extends State<ViewRoutes> {
                     child: ElevatedButton(
                       onPressed: () {
                         // _apiGetPoints();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => AddRoute()),
-                        );
+                        _navigatorAddRoute(context);
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => AddRoute()),
+                        // );
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -476,7 +475,7 @@ class _ViewRoutesState extends State<ViewRoutes> {
     try {
       var deleteRoute = {
           "id": id
-        };
+      };
       var bodyRoutes;
       var res = await CallApi().deleteRoutes(deleteRoute, 'deleteRouteAdmin');
       bodyRoutes = json.decode(res.body);
@@ -498,6 +497,15 @@ class _ViewRoutesState extends State<ViewRoutes> {
     } catch (e) {
       print(e);
     }
+  }
+
+  void _navigatorAddRoute(BuildContext context) async {
+    await Navigator.push(context, MaterialPageRoute(builder: (context) => AddRoute()));
+      _apiGetPoints();
+  }
+  void _navigatorUpdateRoute(BuildContext context, updateRoute) async {
+    await Navigator.push(context, MaterialPageRoute(builder: (context) => updateRoute));
+      _apiGetPoints();
   }
 
   // void _valueFromDelete(BuildContext context) async {

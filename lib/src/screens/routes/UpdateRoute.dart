@@ -8,14 +8,15 @@ import 'package:places_autocomplete/src/api/api.dart';
 import 'package:places_autocomplete/src/screens/map/PickerMap.dart';
 import 'package:places_autocomplete/src/screens/map/SearchMap.dart';
 
-class AddRoute extends StatefulWidget {
-  const AddRoute({key}) : super(key: key);
+class UpdateRoute extends StatefulWidget {
+  final int idForGetRoute;
+  const UpdateRoute({key, @required this.idForGetRoute}) : super(key: key);
 
   @override
-  _AddRouteState createState() => _AddRouteState();
+  _UpdateRouteState createState() => _UpdateRouteState();
 }
 
-class _AddRouteState extends State<AddRoute> {
+class _UpdateRouteState extends State<UpdateRoute> {
   List latlonFromMap = [];
   bool reload = false;
   bool _isLoading = false;
@@ -26,7 +27,7 @@ class _AddRouteState extends State<AddRoute> {
   String busRoute;
   int busNo;
   bool _validate = false;
-  final scaffoldKey = new GlobalKey<ScaffoldState>();
+  final _scaffoldKey = new GlobalKey<ScaffoldState>();
   final formKey = new GlobalKey<FormState>();
 
   TextEditingController _busRouteController = new TextEditingController();
@@ -34,15 +35,29 @@ class _AddRouteState extends State<AddRoute> {
 
   DateTime getTime = DateTime.now().add(new Duration(minutes: 15));
 
+  //update new variables.
+  int idForGetRoute;
+  var _RoutesFromDB;
+  List _PointsFromDB = [];
+
+  @override
+  void initState() {
+    idForGetRoute = widget.idForGetRoute;
+    print(idForGetRoute);
+    _apiGetRoutes();
+    _apiGetPoints();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: scaffoldKey,
+        key: _scaffoldKey,
         appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            _sendRefresh(context);
+            Navigator.pop(context);
           },
         ),
         leadingWidth: 70,
@@ -163,7 +178,7 @@ class _AddRouteState extends State<AddRoute> {
               Spacer(),
               GestureDetector(
                   onTap: () {
-                    showModalBottomSheet(context, item['index']);
+                    showModalForTime(context, item['index']);
                   },
                   child: item['time'] == null
                       ? Text("00:00")
@@ -180,8 +195,9 @@ class _AddRouteState extends State<AddRoute> {
                   setState(() {
                     reload = true;
                   });
-                  latlonFromMap
-                      .removeWhere((element) => element['lat'] == item['lat']);
+                  deletePoints(item['id']);
+                  print(item);
+                  latlonFromMap.removeWhere((element) => element['lat'] == item['lat']);
                   // latlonFromMap.removeAt(item['index']-1);
                   // print(latlonFromMap[0]);
                   setState(() {
@@ -211,6 +227,7 @@ class _AddRouteState extends State<AddRoute> {
 
   TextFormField busRouteInput() {
     return TextFormField(
+      
       decoration: new InputDecoration(
         filled: true,
         focusedErrorBorder:
@@ -281,7 +298,7 @@ class _AddRouteState extends State<AddRoute> {
       // print(
       //     " BusRoute : ${_busRouteController.text}, BusNo : ${_busNoController.text}");
       // print(latlonFromMap);
-      _apiGetPoints();
+      _apiUpdatePoints();
     } else {
       setState(() {
         _validate = true;
@@ -289,7 +306,101 @@ class _AddRouteState extends State<AddRoute> {
     }
   }
 
-  void _apiGetPoints() async {
+  // get routes from DB
+  _apiGetRoutes() async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      var bodyRoutes;
+      var res = await CallApi().getRoutes('getRouteById/$idForGetRoute');
+      bodyRoutes = json.decode(res.body);
+
+      // Add routes to _RoutesFromDB List
+      print("---------");
+      _RoutesFromDB = bodyRoutes;
+      _busRouteController.text = _RoutesFromDB['name'];
+      _busNoController.text = _RoutesFromDB['number'].toString();
+      print("---------");
+    } catch (e) {
+      print(e);
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  // get Points by route ID from DB
+  _apiGetPoints() async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      var bodyRoutes;
+      var res = await CallApi().getRoutes('getPointsByRouteId/$idForGetRoute');
+      bodyRoutes = json.decode(res.body);
+
+      // Add routes to _RoutesFromDB List
+      print("---------");
+      print(bodyRoutes);
+      _PointsFromDB.add(bodyRoutes);
+      print("---------------------");
+      // print(_PointsFromDB[0]);
+      print(_PointsFromDB[0].length);
+      for (var i = 0; i < _PointsFromDB[0].length; i++) {
+        // print(i);
+        setState(() {
+          latlonFromMap.add({
+            "id" : _PointsFromDB[0][i]['id'],
+            "index": latlonFromMap.length + 1,
+            "lat": _PointsFromDB[0][i]['latitude'],
+            "long": _PointsFromDB[0][i]['longitude'],
+            "time": timefromMap
+          });
+        });
+      }
+      print(latlonFromMap);
+      // _RoutesFromDB = bodyRoutes;
+      // _busRouteController.text = _RoutesFromDB['name'];
+      // _busNoController.text = _RoutesFromDB['number'].toString();
+      print("---------");
+    } catch (e) {
+      print(e);
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  void deletePoints(id) async {
+    try {
+      var deleteRoute = {
+          "id": id
+      };
+      var deletePoints;
+      var res = await CallApi().deleteRoutes(deleteRoute, 'deletePointById');
+      deletePoints = json.decode(res.body);
+      print(deletePoints);
+
+          if(deletePoints['errorMessage'] == false){
+              _scaffoldKey.currentState.showSnackBar(
+              SnackBar(
+                content: Text(
+                  "${deletePoints['message']}",
+                  style: TextStyle(color: Colors.white),
+                ),
+                backgroundColor: Colors.green,
+              ),
+            );
+            //  _apiGetPoints();
+          }
+
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void _apiUpdatePoints() async {
     setState(() {
       _isLoading = true;
     });
@@ -302,29 +413,34 @@ class _AddRouteState extends State<AddRoute> {
 
       if (latlonFromMap.length >= 2) {
         var addRoute = {
+          "id": idForGetRoute,
           "name": _busRouteController.text,
           "number": _busNoController.text,
         };
 
-        var res = await CallApi().postRoutes(addRoute, 'addRoute');
+        var res = await CallApi().updateRoutes(addRoute, 'updateRoute');
         bodyRoutes = json.decode(res.body);
+        print(bodyRoutes);
 
         for (var data in latlonFromMap) {
           print(data);
-          var addPoints = {
-            "name": "J to USA",
-            "time": data['time'],
-            "latitude": data['lat'],
-            "longitude": data['long'],
-            "route_id": bodyRoutes['message']['id'],  // this would be dynamic - after routes added ID automatically need to assign
-          };
+          print(data['id'] == null);
+          if(data['id'] == null){
+            var addPoints = {
+              "name": "J to USA",
+              "time": data['time'],
+              "latitude": data['lat'],
+              "longitude": data['long'],
+              "route_id": idForGetRoute,  // this would be dynamic - after routes added ID automatically need to assign
+            };
 
-          var res = await CallApi().postPoints(addPoints, 'addPoint');
-          bodyPoints = json.decode(res.body);
+            var res = await CallApi().postPoints(addPoints, 'addPoint');
+            bodyPoints = json.decode(res.body);
+          }
         }
 
         if (bodyPoints['errorMessage'] == false) {
-          scaffoldKey.currentState.showSnackBar(
+          _scaffoldKey.currentState.showSnackBar(
             SnackBar(
               content: Text(
                 "${bodyPoints['message']}",
@@ -334,9 +450,9 @@ class _AddRouteState extends State<AddRoute> {
             ),
           );
         }
-        latlonFromMap.clear();
-        _busRouteController.clear();
-        _busNoController.clear();
+        // latlonFromMap.clear();
+        // _busRouteController.clear();
+        // _busNoController.clear();
       }
       print(bodyPoints);
 
@@ -348,7 +464,7 @@ class _AddRouteState extends State<AddRoute> {
     });
   }
 
-  void showModalBottomSheet(ctx, index) {
+  void showModalForTime(ctx, index) {
     // showCupertinoModalPopup is a built-in function of the cupertino library
     showCupertinoModalPopup(
         context: ctx,
@@ -500,12 +616,11 @@ class _AddRouteState extends State<AddRoute> {
     }
     // close the popup
     Navigator.of(context).pop();
-      print(latlonFromMap);
-    }
-
-   void _sendRefresh(BuildContext context) {
-    Navigator.pop(context, true);
-    // Navigator.pop(context, {"lat" : latfromMap , "lon" : lonfromMap});
+    print(latlonFromMap);
   }
 
+  void _sendRefresh(BuildContext context) {
+    Navigator.pop(context, "textToSendBack01");
+    // Navigator.pop(context, {"lat" : latfromMap , "lon" : lonfromMap});
+  }
 }
