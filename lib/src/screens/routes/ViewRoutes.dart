@@ -19,13 +19,58 @@ class _ViewRoutesState extends State<ViewRoutes> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   // This list holds the data for the list view
-  List<Map<String, dynamic>> _foundUsers = [];
+  List<dynamic> _foundUsers = [];
   List _RoutesFromDB = [];
   @override
   initState() {
     _apiGetPoints();
     super.initState();
   }
+
+  // This function is called whenever the text field changes
+  void _runFilter(String enteredKeyword) {
+    List<dynamic> results = [];
+    if (enteredKeyword.isEmpty) {
+      // if the search field is empty or only contains white-space, we'll display all users
+      results = _RoutesFromDB[0];
+    } else {
+       results = _RoutesFromDB[0]
+          .where((user) {
+            return user["name"].toLowerCase().contains(enteredKeyword.toLowerCase())? true : false;
+          }).toList();
+          // print(results);
+      // we use the toLowerCase() method to make it case-insensitive
+    }
+
+    // Refresh the UI
+    setState(() {
+      _foundUsers = results;
+      print("-------------------_foundUsers-------------------");
+      print(_foundUsers);
+    });
+  }
+
+  // _runFilter( enteredKeyword) {
+    
+  //   // print(_RoutesFromDB[0]);
+  //   print("-------------------_RoutesFromDB[0]-------------------");
+  // //   var selectedUsers = _RoutesFromDB[0].map((user) {
+  // //     print(user['name']);
+  // //     // return user['name'];
+  // //   if(enteredKeyword.contains(user["name"])){
+  // //     print(user["name"]);
+  // //   }
+  // //   // return null;
+  // // }).toList();
+
+  // // var selectedUsers;
+  // // _RoutesFromDB[0].where((u) {
+  // //   selectedUsers = u["name"].contains(enteredKeyword);
+  // //   print(u["name"].toLowerCase().contains(enteredKeyword.toLowerCase()));
+  // //   return true;
+  // // }).toList();
+  // // print(selectedUsers);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +111,10 @@ class _ViewRoutesState extends State<ViewRoutes> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0),
                   child: TextField(
+                    onChanged: (value) => _runFilter(value),
+                    // onChanged : (value) {
+                    //   print(value);
+                    // },
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       fillColor: Colors.white,
@@ -116,7 +165,7 @@ class _ViewRoutesState extends State<ViewRoutes> {
                                         shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(10.0))),
-                                        // key: ValueKey(_foundUsers[index]["id"]),
+                                        key: ValueKey(_RoutesFromDB[0][index]["id"]),
                                         // color: Colors.amberAccent,
                                         elevation: 0,
                                         //    margin: EdgeInsets.symmetric(vertical: 10),
@@ -461,7 +510,7 @@ class _ViewRoutesState extends State<ViewRoutes> {
       // Add routes to _RoutesFromDB List
       print("---------");
       _RoutesFromDB.add(bodyRoutes);
-      // print(_RoutesFromDB);
+      // print(_RoutesFromDB[0]);
       print("---------");
     } catch (e) {
       print(e);
