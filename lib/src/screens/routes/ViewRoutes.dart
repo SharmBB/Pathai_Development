@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:places_autocomplete/Utils/Constraints.dart';
 import 'package:places_autocomplete/src/api/api.dart';
+import 'package:places_autocomplete/src/parts/ReminderAlertBox.dart';
 import 'package:places_autocomplete/src/parts/RoutesCard.dart';
 import 'package:places_autocomplete/src/parts/YesOrNoDialogBox.dart';
 import 'package:places_autocomplete/src/screens/routes/AddRoute.dart';
@@ -35,10 +36,11 @@ class _ViewRoutesState extends State<ViewRoutes> {
     if (enteredKeyword.isEmpty) {
       results = _RoutesFromDB[0];
     } else {
-       results = _RoutesFromDB[0]
-          .where((user) {
-            return user["name"].toLowerCase().contains(enteredKeyword.toLowerCase())? true : false;
-          }).toList();
+      results = _RoutesFromDB[0].where((user) {
+        return user["name"].toLowerCase().contains(enteredKeyword.toLowerCase())
+            ? true
+            : false;
+      }).toList();
     }
 
     setState(() {
@@ -68,7 +70,15 @@ class _ViewRoutesState extends State<ViewRoutes> {
             ),
             IconButton(
               icon: Icon(Icons.notifications_rounded, color: Colors.white),
-              onPressed: () {},
+              onPressed: () {
+                showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) =>
+                        ReminderAlertBox(onPressedYes: () {
+                          Navigator.pop(context);
+                          // deleteRoutes(_RoutesFromDB[0][index]['id']);
+                        }));
+              },
             ),
             IconButton(
               icon: Icon(Icons.settings, color: Colors.white),
@@ -125,44 +135,52 @@ class _ViewRoutesState extends State<ViewRoutes> {
                 //   height: 20,
                 // ),
                 !_isLoading
-                    ? _RoutesFromDB[0].length == 0 ? 
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20),
-                          child: Text("No routes available"),
-                        ) : Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 20.0, bottom: 80),
-                          child: ListView.builder(
-                              itemCount: _foundUsers.length,
-                              itemBuilder: (context, index) => Padding(
-                                    padding: const EdgeInsets.only(bottom: 1.0),
-                                    child: CustomRoutesCard(
-                                      valueKey: _RoutesFromDB[0][index]["id"], 
-                                      title: _foundUsers[index]["name"], 
-                                      length: "length", 
-                                      time: "time", 
-                                      busFee: "busFee", 
-                                      busNumber: _foundUsers[index]['number'].toString(), 
-                                      onSelected: (value) {
-                                        if (value == 1) {
-                                           showDialog<String>(
-                                              context: context,
-                                              builder: (BuildContext context) => YesOrNoDialogBox(
-                                                onPressedYes: (){
+                    ? _RoutesFromDB[0].length == 0
+                        ? Padding(
+                            padding: const EdgeInsets.only(top: 20),
+                            child: Text("No routes available"),
+                          )
+                        : Expanded(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 20.0, bottom: 80),
+                              child: ListView.builder(
+                                itemCount: _foundUsers.length,
+                                itemBuilder: (context, index) => Padding(
+                                  padding: const EdgeInsets.only(bottom: 1.0),
+                                  child: CustomRoutesCard(
+                                    valueKey: _RoutesFromDB[0][index]["id"],
+                                    title: _foundUsers[index]["name"],
+                                    length: "length",
+                                    time: "time",
+                                    busFee: "busFee",
+                                    busNumber:
+                                        _foundUsers[index]['number'].toString(),
+                                    onSelected: (value) {
+                                      if (value == 1) {
+                                        showDialog<String>(
+                                            context: context,
+                                            builder: (BuildContext context) =>
+                                                YesOrNoDialogBox(
+                                                    onPressedYes: () {
                                                   Navigator.pop(context);
-                                                  deleteRoutes(_RoutesFromDB[0][index]['id']);
-                                              }));
-
-                                        } else if (value == 2) {
-                                          //pass the Id to update route page
-                                          _navigatorUpdateRoute(context,UpdateRoute(idForGetRoute: _foundUsers[index]['id']));
-                                        }
-                                      },
-                                    ),
+                                                  deleteRoutes(_RoutesFromDB[0]
+                                                      [index]['id']);
+                                                }));
+                                      } else if (value == 2) {
+                                        //pass the Id to update route page
+                                        _navigatorUpdateRoute(
+                                            context,
+                                            UpdateRoute(
+                                                idForGetRoute:
+                                                    _foundUsers[index]['id']));
+                                      }
+                                    },
                                   ),
                                 ),
-                        ),
-                      )
+                              ),
+                            ),
+                          )
                     : Padding(
                         padding: const EdgeInsets.only(top: 60.0),
                         child: CupertinoActivityIndicator(),
@@ -238,41 +256,40 @@ class _ViewRoutesState extends State<ViewRoutes> {
     });
   }
 
-    void deleteRoutes(id) async {
+  void deleteRoutes(id) async {
     try {
-      var deleteRoute = {
-          "id": id
-      };
+      var deleteRoute = {"id": id};
       var bodyRoutes;
       var res = await CallApi().deleteRoutes(deleteRoute, 'deleteRouteAdmin');
       bodyRoutes = json.decode(res.body);
       // print(bodyRoutes);
 
-          if(bodyRoutes['errorMessage'] == false){
-              _scaffoldKey.currentState.showSnackBar(
-              SnackBar(
-                content: Text(
-                  "${bodyRoutes['message']}",
-                  style: TextStyle(color: Colors.white),
-                ),
-                backgroundColor: Colors.green,
-              ),
-            );
-             _apiGetRoutes();
-          }
-
+      if (bodyRoutes['errorMessage'] == false) {
+        _scaffoldKey.currentState.showSnackBar(
+          SnackBar(
+            content: Text(
+              "${bodyRoutes['message']}",
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.green,
+          ),
+        );
+        _apiGetRoutes();
+      }
     } catch (e) {
       print(e);
     }
   }
 
   void _navigatorAddRoute(BuildContext context) async {
-    await Navigator.push(context, MaterialPageRoute(builder: (context) => AddRoute()));
-      _apiGetRoutes();
-  }
-  void _navigatorUpdateRoute(BuildContext context, updateRoute) async {
-    await Navigator.push(context, MaterialPageRoute(builder: (context) => updateRoute));
-      _apiGetRoutes();
+    await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => AddRoute()));
+    _apiGetRoutes();
   }
 
+  void _navigatorUpdateRoute(BuildContext context, updateRoute) async {
+    await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => updateRoute));
+    _apiGetRoutes();
+  }
 }

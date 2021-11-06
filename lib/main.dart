@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:places_autocomplete/Admin_Login/signin.dart';
 import 'package:places_autocomplete/src/screens/LandingPage.dart';
 // import 'package:provider/provider.dart';
 
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: LandingPage(),
+      home: SignIn(),
       debugShowCheckedModeBanner: false,
     );
   }
