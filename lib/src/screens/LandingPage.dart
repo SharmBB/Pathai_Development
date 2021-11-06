@@ -103,9 +103,7 @@ class _LandingPageState extends State<LandingPage> {
                   secondText: "Text",
                   thirdText: "More Text",
                   buttonText: "New  Bus",
-                  buttonFunction: () {
-                    _apiGetRoutes();
-                  })
+                  buttonFunction: () {})
             ],
           )),
     );
