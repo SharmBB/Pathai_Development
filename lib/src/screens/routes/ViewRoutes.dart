@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:places_autocomplete/Utils/Constraints.dart';
 import 'package:places_autocomplete/src/api/api.dart';
 import 'package:places_autocomplete/src/parts/RoutesCard.dart';
+import 'package:places_autocomplete/src/parts/YesOrNoDialogBox.dart';
 import 'package:places_autocomplete/src/screens/routes/AddRoute.dart';
 import 'package:places_autocomplete/src/screens/routes/UpdateRoute.dart';
 
@@ -125,10 +126,10 @@ class _ViewRoutesState extends State<ViewRoutes> {
                 // ),
                 !_isLoading
                     ? _RoutesFromDB[0].length == 0 ? 
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 20),
-                                      child: Text("No routes available"),
-                                    ) : Expanded(
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: Text("No routes available"),
+                        ) : Expanded(
                         child: Padding(
                           padding: const EdgeInsets.only(top: 20.0, bottom: 80),
                           child: ListView.builder(
@@ -144,9 +145,14 @@ class _ViewRoutesState extends State<ViewRoutes> {
                                       busNumber: _foundUsers[index]['number'].toString(), 
                                       onSelected: (value) {
                                         if (value == 1) {
-                                          showDialog<String>(
+                                           showDialog<String>(
                                               context: context,
-                                              builder: (BuildContext context) => dialog(context, _RoutesFromDB[0][index]['id']));
+                                              builder: (BuildContext context) => YesOrNoDialogBox(
+                                                onPressedYes: (){
+                                                  Navigator.pop(context);
+                                                  deleteRoutes(_RoutesFromDB[0][index]['id']);
+                                              }));
+
                                         } else if (value == 2) {
                                           //pass the Id to update route page
                                           _navigatorUpdateRoute(context,UpdateRoute(idForGetRoute: _foundUsers[index]['id']));
@@ -155,31 +161,6 @@ class _ViewRoutesState extends State<ViewRoutes> {
                                     ),
                                   ),
                                 ),
-                              // child: ListView.builder(
-                              // itemCount: _RoutesFromDB[0].length,
-                              // itemBuilder: (context, index) => Padding(
-                              //       padding: const EdgeInsets.only(bottom: 1.0),
-                              //       child: CustomRoutesCard(
-                              //         valueKey: _RoutesFromDB[0][index]["id"], 
-                              //         title: _RoutesFromDB[0][index]["name"], 
-                              //         length: "length", 
-                              //         time: "time", 
-                              //         busFee: "busFee", 
-                              //         busNumber: _RoutesFromDB[0][index]['number'].toString(), 
-                              //         onSelected: (value) {
-                              //           if (value == 1) {
-                              //             showDialog<String>(
-                              //                 context: context,
-                              //                 builder: (BuildContext context) => dialog(context, _RoutesFromDB[0][index]['id']));
-                              //           } else if (value == 2) {
-                              //             //pass the Id to update route page
-                              //             UpdateRoute(idForGetRoute: _RoutesFromDB[0][index]['id']);
-                              //             _navigatorUpdateRoute(context,UpdateRoute(idForGetRoute: _RoutesFromDB[0][index]['id']));
-                              //           }
-                              //         },
-                              //       ),
-                              //     ),
-                              //   ),
                         ),
                       )
                     : Padding(
@@ -233,102 +214,6 @@ class _ViewRoutesState extends State<ViewRoutes> {
         ]));
   }
 
-  AlertDialog dialog(BuildContext context, deleteId) {
-    var width = MediaQuery.of(context).size.width;
-    return AlertDialog(
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(15.0))),
-      contentPadding: EdgeInsets.zero,
-      content: Column(mainAxisSize: MainAxisSize.min, children: [
-        Padding(
-            padding: const EdgeInsets.only(
-                bottom: 10.0, top: 30.0, left: 20.0, right: 20.0),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Delete Route?',
-                    style: TextStyle(fontSize: 18.0, color: Colors.black),
-                  )),
-              Padding(
-                  padding: const EdgeInsets.only(
-                    top: 10.0,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      TextButton(
-                        style: ButtonStyle(
-                          foregroundColor:
-                              MaterialStateProperty.all(Colors.grey),
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Text(
-                          'No',
-                          style: TextStyle(
-                            fontSize: 14.0,
-                          ),
-                        ),
-                      ),
-                      TextButton(
-                        style: ButtonStyle(
-                          foregroundColor:
-                              MaterialStateProperty.all(Colors.red),
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                          deleteRoutes(deleteId);
-                          // print(deleteId);
-                        },
-                        child: const Text(
-                          'Yes',
-                          textAlign: TextAlign.right,
-                          style: TextStyle(
-                            fontSize: 14.0,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ))
-            ])),
-        Align(
-            alignment: Alignment.bottomLeft,
-            child: ConstrainedBox(
-              constraints: BoxConstraints.tightFor(width: 400, height: 60),
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => ViewRoutes()),
-                  // );
-                },
-                child: Text(
-                  'Cancel',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16.0,
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: kPrimaryGreenColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(15),
-                      bottomLeft: Radius.circular(15),
-                    ),
-                  ),
-                ),
-              ),
-            )),
-      ]),
-    );
-  }
-
   void _apiGetPoints() async {
     setState(() {
       _isLoading = true;
@@ -361,7 +246,7 @@ class _ViewRoutesState extends State<ViewRoutes> {
       var bodyRoutes;
       var res = await CallApi().deleteRoutes(deleteRoute, 'deleteRouteAdmin');
       bodyRoutes = json.decode(res.body);
-      print(bodyRoutes);
+      // print(bodyRoutes);
 
           if(bodyRoutes['errorMessage'] == false){
               _scaffoldKey.currentState.showSnackBar(
@@ -390,10 +275,4 @@ class _ViewRoutesState extends State<ViewRoutes> {
       _apiGetPoints();
   }
 
-  // void _valueFromDelete(BuildContext context) async {
-  //   // start the SecondScreen and wait for it to finish with a result
-  //   final result = await showDialog<String>(
-  //       context: context, builder: (BuildContext context) => dialog(context, 2));
-  //   print(result);
-  // }
 }

@@ -153,7 +153,7 @@ class _UpdateRouteState extends State<UpdateRoute> {
                               onPressed: () {
                                 onClick();
                               },
-                              child: Text("Add Routes"),
+                              child: Text("Update Routes"),
                             ),
                     ),
                   ],
@@ -355,7 +355,7 @@ class _UpdateRouteState extends State<UpdateRoute> {
             "index": latlonFromMap.length + 1,
             "lat": _PointsFromDB[0][i]['latitude'],
             "long": _PointsFromDB[0][i]['longitude'],
-            "time": timefromMap
+            "time": _PointsFromDB[0][i]['time']
           });
         });
       }
