@@ -2,9 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:places_autocomplete/Utils/Constraints.dart';
 import 'package:places_autocomplete/src/parts/drawer.dart';
-import 'package:places_autocomplete/src/parts/drawerByKithu.dart';
-import 'package:places_autocomplete/src/screens/map/SearchMap.dart';
-import 'package:places_autocomplete/src/screens/routes/AddRoute.dart';
 import 'package:places_autocomplete/src/screens/routes/ViewRoutes.dart';
 
 class LandingPage extends StatefulWidget {

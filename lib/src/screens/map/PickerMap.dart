@@ -15,7 +15,6 @@ class _PickerMapState extends State<PickerMap> {
 
   final LatLng _center = const LatLng(28.535517, 77.391029);
 
-  //List<MapMarker> mapMarkers = [];
   List<Marker> customMarkers = [];
 
   double latfromMap ;
