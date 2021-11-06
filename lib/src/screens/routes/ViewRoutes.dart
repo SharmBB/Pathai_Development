@@ -25,7 +25,7 @@ class _ViewRoutesState extends State<ViewRoutes> {
   List _RoutesFromDB = [];
   @override
   initState() {
-    _apiGetPoints();
+    _apiGetRoutes();
     super.initState();
   }
 
@@ -182,7 +182,7 @@ class _ViewRoutesState extends State<ViewRoutes> {
                         BoxConstraints.tightFor(width: width * 0.9, height: 50),
                     child: ElevatedButton(
                       onPressed: () {
-                        // _apiGetPoints();
+                        // _apiGetRoutes();
                         _navigatorAddRoute(context);
                         // Navigator.push(
                         //   context,
@@ -214,7 +214,7 @@ class _ViewRoutesState extends State<ViewRoutes> {
         ]));
   }
 
-  void _apiGetPoints() async {
+  void _apiGetRoutes() async {
     setState(() {
       _isLoading = true;
     });
@@ -258,7 +258,7 @@ class _ViewRoutesState extends State<ViewRoutes> {
                 backgroundColor: Colors.green,
               ),
             );
-             _apiGetPoints();
+             _apiGetRoutes();
           }
 
     } catch (e) {
@@ -268,11 +268,11 @@ class _ViewRoutesState extends State<ViewRoutes> {
 
   void _navigatorAddRoute(BuildContext context) async {
     await Navigator.push(context, MaterialPageRoute(builder: (context) => AddRoute()));
-      _apiGetPoints();
+      _apiGetRoutes();
   }
   void _navigatorUpdateRoute(BuildContext context, updateRoute) async {
     await Navigator.push(context, MaterialPageRoute(builder: (context) => updateRoute));
-      _apiGetPoints();
+      _apiGetRoutes();
   }
 
 }
