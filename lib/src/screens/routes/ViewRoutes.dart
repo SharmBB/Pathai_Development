@@ -32,46 +32,19 @@ class _ViewRoutesState extends State<ViewRoutes> {
   void _runFilter(String enteredKeyword) {
     List<dynamic> results = [];
     if (enteredKeyword.isEmpty) {
-      // if the search field is empty or only contains white-space, we'll display all users
       results = _RoutesFromDB[0];
     } else {
        results = _RoutesFromDB[0]
           .where((user) {
             return user["name"].toLowerCase().contains(enteredKeyword.toLowerCase())? true : false;
           }).toList();
-          // print(results);
-      // we use the toLowerCase() method to make it case-insensitive
     }
 
-    // Refresh the UI
     setState(() {
       _foundUsers = results;
-      print("-------------------_foundUsers-------------------");
-      print(_foundUsers);
+      // print(_foundUsers);
     });
   }
-
-  // _runFilter( enteredKeyword) {
-    
-  //   // print(_RoutesFromDB[0]);
-  //   print("-------------------_RoutesFromDB[0]-------------------");
-  // //   var selectedUsers = _RoutesFromDB[0].map((user) {
-  // //     print(user['name']);
-  // //     // return user['name'];
-  // //   if(enteredKeyword.contains(user["name"])){
-  // //     print(user["name"]);
-  // //   }
-  // //   // return null;
-  // // }).toList();
-
-  // // var selectedUsers;
-  // // _RoutesFromDB[0].where((u) {
-  // //   selectedUsers = u["name"].contains(enteredKeyword);
-  // //   print(u["name"].toLowerCase().contains(enteredKeyword.toLowerCase()));
-  // //   return true;
-  // // }).toList();
-  // // print(selectedUsers);
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -159,17 +132,16 @@ class _ViewRoutesState extends State<ViewRoutes> {
                         child: Padding(
                           padding: const EdgeInsets.only(top: 20.0, bottom: 80),
                           child: ListView.builder(
-                              itemCount: _RoutesFromDB[0].length,
+                              itemCount: _foundUsers.length,
                               itemBuilder: (context, index) => Padding(
                                     padding: const EdgeInsets.only(bottom: 1.0),
-                                    
                                     child: CustomRoutesCard(
                                       valueKey: _RoutesFromDB[0][index]["id"], 
-                                      title: _RoutesFromDB[0][index]["name"], 
+                                      title: _foundUsers[index]["name"], 
                                       length: "length", 
                                       time: "time", 
                                       busFee: "busFee", 
-                                      busNumber: _RoutesFromDB[0][index]['number'].toString(), 
+                                      busNumber: _foundUsers[index]['number'].toString(), 
                                       onSelected: (value) {
                                         if (value == 1) {
                                           showDialog<String>(
@@ -177,12 +149,37 @@ class _ViewRoutesState extends State<ViewRoutes> {
                                               builder: (BuildContext context) => dialog(context, _RoutesFromDB[0][index]['id']));
                                         } else if (value == 2) {
                                           //pass the Id to update route page
-                                          UpdateRoute(idForGetRoute: _RoutesFromDB[0][index]['id']);
-                                          _navigatorUpdateRoute(context,UpdateRoute(idForGetRoute: _RoutesFromDB[0][index]['id']));
+                                          _navigatorUpdateRoute(context,UpdateRoute(idForGetRoute: _foundUsers[index]['id']));
                                         }
                                       },
-                                      ),
-                                  )),
+                                    ),
+                                  ),
+                                ),
+                              // child: ListView.builder(
+                              // itemCount: _RoutesFromDB[0].length,
+                              // itemBuilder: (context, index) => Padding(
+                              //       padding: const EdgeInsets.only(bottom: 1.0),
+                              //       child: CustomRoutesCard(
+                              //         valueKey: _RoutesFromDB[0][index]["id"], 
+                              //         title: _RoutesFromDB[0][index]["name"], 
+                              //         length: "length", 
+                              //         time: "time", 
+                              //         busFee: "busFee", 
+                              //         busNumber: _RoutesFromDB[0][index]['number'].toString(), 
+                              //         onSelected: (value) {
+                              //           if (value == 1) {
+                              //             showDialog<String>(
+                              //                 context: context,
+                              //                 builder: (BuildContext context) => dialog(context, _RoutesFromDB[0][index]['id']));
+                              //           } else if (value == 2) {
+                              //             //pass the Id to update route page
+                              //             UpdateRoute(idForGetRoute: _RoutesFromDB[0][index]['id']);
+                              //             _navigatorUpdateRoute(context,UpdateRoute(idForGetRoute: _RoutesFromDB[0][index]['id']));
+                              //           }
+                              //         },
+                              //       ),
+                              //     ),
+                              //   ),
                         ),
                       )
                     : Padding(
@@ -343,10 +340,11 @@ class _ViewRoutesState extends State<ViewRoutes> {
       bodyRoutes = json.decode(res.body);
 
       // Add routes to _RoutesFromDB List
-      print("---------");
+      // print("---------");
       _RoutesFromDB.add(bodyRoutes);
+      _foundUsers = _RoutesFromDB[0];
       // print(_RoutesFromDB[0]);
-      print("---------");
+      // print("---------");
     } catch (e) {
       print(e);
     }
