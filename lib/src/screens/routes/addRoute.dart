@@ -505,7 +505,6 @@ class _AddRouteState extends State<AddRoute> {
 
    void _sendRefresh(BuildContext context) {
     Navigator.pop(context, true);
-    // Navigator.pop(context, {"lat" : latfromMap , "lon" : lonfromMap});
   }
 
 }

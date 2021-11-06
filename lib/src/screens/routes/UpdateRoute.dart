@@ -625,8 +625,4 @@ class _UpdateRouteState extends State<UpdateRoute> {
     print(latlonFromMap);
   }
 
-  void _sendRefresh(BuildContext context) {
-    Navigator.pop(context, "textToSendBack01");
-    // Navigator.pop(context, {"lat" : latfromMap , "lon" : lonfromMap});
-  }
 }
