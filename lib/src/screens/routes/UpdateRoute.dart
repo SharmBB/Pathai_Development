@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:places_autocomplete/Utils/Constraints.dart';
 import 'package:places_autocomplete/src/api/api.dart';
+import 'package:places_autocomplete/src/parts/YesOrNoDialogBox.dart';
 import 'package:places_autocomplete/src/screens/map/PickerMap.dart';
 import 'package:places_autocomplete/src/screens/map/SearchMap.dart';
 
@@ -191,16 +192,18 @@ class _UpdateRouteState extends State<UpdateRoute> {
               // Spacer(),
               SizedBox(width: 50),
               GestureDetector(
-                onTap: () {
+                onTap: () async{
+                   await showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => YesOrNoDialogBox(
+                      onPressedYes: (){
+                        Navigator.pop(context);
+                        deletePoints(item['id']);
+                        latlonFromMap.removeWhere((element) => element['lat'] == item['lat']);
+                  }));
+
                   setState(() {
                     reload = true;
-                  });
-                  deletePoints(item['id']);
-                  print(item);
-                  latlonFromMap.removeWhere((element) => element['lat'] == item['lat']);
-                  // latlonFromMap.removeAt(item['index']-1);
-                  // print(latlonFromMap[0]);
-                  setState(() {
                     reload = false;
                   });
                 },
@@ -398,6 +401,9 @@ class _UpdateRouteState extends State<UpdateRoute> {
     } catch (e) {
       print(e);
     }
+  }
+  _deletePointsFromLocalList(lat){
+    latlonFromMap.removeWhere((element) => element['lat'] == lat);
   }
 
   void _apiUpdatePoints() async {

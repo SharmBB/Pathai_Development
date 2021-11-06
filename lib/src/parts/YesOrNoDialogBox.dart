@@ -15,7 +15,7 @@ class YesOrNoDialogBox extends StatelessWidget {
       content: Column(mainAxisSize: MainAxisSize.min, children: [
         Padding(
             padding: const EdgeInsets.only(
-                bottom: 10.0, top: 30.0, left: 20.0, right: 20.0),
+                bottom: 10.0, top: 30.0, left: 0.0, right: 0.0),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Align(
@@ -26,10 +26,10 @@ class YesOrNoDialogBox extends StatelessWidget {
                   )),
               Padding(
                   padding: const EdgeInsets.only(
-                    top: 10.0,
+                    top: 30.0,
                   ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       TextButton(
@@ -63,33 +63,7 @@ class YesOrNoDialogBox extends StatelessWidget {
                       ),
                     ],
                   ))
-            ])),
-        Align(
-            alignment: Alignment.bottomLeft,
-            child: ConstrainedBox(
-              constraints: BoxConstraints.tightFor(width: 400, height: 60),
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  'Cancel',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16.0,
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: kPrimaryGreenColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(15),
-                      bottomLeft: Radius.circular(15),
-                    ),
-                  ),
-                ),
-              ),
-            )),
+            ]))
       ]),
     );
   }
