@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:places_autocomplete/Utils/Constraints.dart';
 import 'package:places_autocomplete/src/api/api.dart';
+import 'package:places_autocomplete/src/parts/RoutesCard.dart';
 import 'package:places_autocomplete/src/screens/routes/AddRoute.dart';
 import 'package:places_autocomplete/src/screens/routes/UpdateRoute.dart';
 
@@ -161,192 +162,26 @@ class _ViewRoutesState extends State<ViewRoutes> {
                               itemCount: _RoutesFromDB[0].length,
                               itemBuilder: (context, index) => Padding(
                                     padding: const EdgeInsets.only(bottom: 1.0),
-                                    child: Card(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10.0))),
-                                        key: ValueKey(_RoutesFromDB[0][index]["id"]),
-                                        // color: Colors.amberAccent,
-                                        elevation: 0,
-                                        //    margin: EdgeInsets.symmetric(vertical: 10),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                            left: 20.0,
-                                            right: 20.0,
-                                            bottom: 10.0,
-                                          ),
-                                          child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                // leading: Text(
-                                                //   _foundUsers[index]["id"].toString(),
-                                                //   style: TextStyle(fontSize: 24),
-                                                // ),
-                                                Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  bottom: 10.0,
-                                                                  top: 10.0),
-                                                          child: Text(
-                                                              "${_RoutesFromDB[0][index]['name']}",
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontSize:
-                                                                      16.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold))),
-                                                      PopupMenuButton<int>(
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius.all(
-                                                                    Radius.circular(
-                                                                        15.0))),
-                                                        itemBuilder:
-                                                            (context) => [
-                                                          PopupMenuItem(
-                                                            value: 1,
-                                                            child:
-                                                                Text("Delete"),
-                                                          ),
-                                                          PopupMenuDivider(),
-                                                          PopupMenuItem(
-                                                            value: 2,
-                                                            child: Text("Edit"),
-                                                          ),
-                                                        ],
-                                                        onCanceled: () {
-                                                          print(
-                                                              "You have canceled the menu.");
-                                                        },
-                                                        onSelected: (value) {
-                                                          if (value == 1) {
-                                                            showDialog<String>(
-                                                                context: context, builder: (BuildContext context) => dialog(context,_RoutesFromDB[0][index]['id']));
-                                                            // print(result);
-
-                                                          } else if (value == 2) {
-                                                            //pass the Id to update route page
-                                                            UpdateRoute(idForGetRoute: _RoutesFromDB[0][index]['id']);
-                                                            _navigatorUpdateRoute(context, UpdateRoute(idForGetRoute: _RoutesFromDB[0][index]['id']));
-                                                            
-                                                            
-                                                            // print(_RoutesFromDB[0][index]);
-                                                          }
-                                                        },
-                                                        icon: Icon(
-                                                            Icons.more_horiz),
-                                                      ),
-                                                    ]),
-
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Row(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Text(
-                                                                    'Length : ',
-                                                                    style:
-                                                                        TextStyle(
-                                                                      color: Colors
-                                                                          .grey,
-                                                                    )),
-                                                                Text(
-                                                                  '${"title"} Km',
-                                                                ),
-                                                              ]),
-                                                          Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      top:
-                                                                          10.0),
-                                                              child: Row(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    Text(
-                                                                        'Time : ',
-                                                                        style:
-                                                                            TextStyle(
-                                                                          color:
-                                                                              Colors.grey,
-                                                                        )),
-                                                                    Text(
-                                                                        '${"title"} h'),
-                                                                  ])),
-                                                        ]),
-                                                    Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Row(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Text('Bus Fee : ',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .grey,
-                                                                  )),
-                                                              Text(
-                                                                  '${"title"} Rs'),
-                                                            ]),
-                                                        Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    top: 10.0),
-                                                            child: Row(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  Text(
-                                                                      'Bus Number : ',
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: Colors
-                                                                            .grey,
-                                                                      )),
-                                                                  Text(
-                                                                      '${_RoutesFromDB[0][index]['number']} '),
-                                                                ])),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ]),
-                                        ),
-                                        ),
+                                    
+                                    child: CustomRoutesCard(
+                                      valueKey: _RoutesFromDB[0][index]["id"], 
+                                      title: _RoutesFromDB[0][index]["name"], 
+                                      length: "length", 
+                                      time: "time", 
+                                      busFee: "busFee", 
+                                      busNumber: _RoutesFromDB[0][index]['number'].toString(), 
+                                      onSelected: (value) {
+                                        if (value == 1) {
+                                          showDialog<String>(
+                                              context: context,
+                                              builder: (BuildContext context) => dialog(context, _RoutesFromDB[0][index]['id']));
+                                        } else if (value == 2) {
+                                          //pass the Id to update route page
+                                          UpdateRoute(idForGetRoute: _RoutesFromDB[0][index]['id']);
+                                          _navigatorUpdateRoute(context,UpdateRoute(idForGetRoute: _RoutesFromDB[0][index]['id']));
+                                        }
+                                      },
+                                      ),
                                   )),
                         ),
                       )
