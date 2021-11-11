@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:places_autocomplete/Utils/Constraints.dart';
-import 'package:places_autocomplete/src/api/api.dart';
+import 'package:places_autocomplete/src/api/Api.dart';
 import 'package:places_autocomplete/src/screens/map/PickerMap.dart';
 import 'package:places_autocomplete/src/screens/map/SearchMap.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:places_autocomplete/Utils/Constraints.dart';
 import 'package:places_autocomplete/src/screens/LandingPage.dart';
-import 'package:places_autocomplete/src/screens/login/otpPage.dart';
+import 'package:places_autocomplete/src/screens/login/OtpPage.dart';
 
 class SignIn extends StatefulWidget {
   @override

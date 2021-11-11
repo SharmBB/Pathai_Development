@@ -9,7 +9,18 @@ class CallApi {
   var _urlAuth = 'https://paathaiapi.moodfor.codes/api/';
   var _urlwithoutAuth = 'https://class.moodfor.codes/api/';
   // var _urlwithoutAuth = 'https://moodfor.codes/api/';
-  // var token;
+  var token;
+
+  
+
+  // authData(data, apiUrl) async {
+  //   var fullUrl = Uri.parse(_urlAuth + apiUrl);
+  //   return await http.post(
+  //     fullUrl,
+  //     body: jsonEncode(data),
+  //     headers: _setHeaders(),
+  //   );
+  // }
 
   postRoutes(data, apiUrl) async {
     var fullUrl = Uri.parse(_urlAuth + apiUrl);
@@ -74,6 +85,6 @@ class CallApi {
   _setHeaders() => {
         'Content-type': 'application/json',
         'Accept': 'application/json',
-        // 'Authorization': 'Bearer $token'
+      //  'Authorization': 'Bearer $token'
       };
 }

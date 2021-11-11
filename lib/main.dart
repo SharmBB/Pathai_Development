@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:places_autocomplete/src/screens/LandingPage.dart';
-import 'package:places_autocomplete/src/screens/login/signin.dart';
+import 'package:places_autocomplete/src/screens/login/Signin.dart';
 // import 'package:provider/provider.dart';
 
 void main() {

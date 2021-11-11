@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:places_autocomplete/Utils/Constraints.dart';
 import 'package:places_autocomplete/src/screens/LandingPage.dart';
-import 'package:places_autocomplete/src/screens/login/otpPage.dart';
+import 'package:places_autocomplete/src/screens/login/OtpPage.dart';
 
 class ResetPassword extends StatefulWidget {
   @override
@@ -171,12 +171,10 @@ class _MyHomePageState extends State<ResetPassword> {
       keyboardType: TextInputType.text,
       obscureText: showPassword,
       validator: (value) {
-        RegExp regex = new RegExp(
-            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
         if (value.length == 0) {
-          return 'Password Required';
-        } else if (!regex.hasMatch(value)) {
-          return 'Password Must contains \n - Minimum 1 Upper case \n - Minimum 1 lowercase \n - Minimum 1 Number \n - Minimum 1 Special Character \n - Minimum 8 letters';
+          return 'Confirm Password required';
+        } else if ((value != _passwordController.text)) {
+          return 'Both Password must match';
         }
         return null;
       },

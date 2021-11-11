@@ -1,11 +1,9 @@
 import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:places_autocomplete/Utils/Constraints.dart';
-import 'package:places_autocomplete/src/api/api.dart';
+import 'package:places_autocomplete/src/api/Api.dart';
 import 'package:places_autocomplete/src/parts/DashboardCard.dart';
-import 'package:places_autocomplete/src/parts/drawer.dart';
+import 'package:places_autocomplete/src/parts/Drawer.dart';
 import 'package:places_autocomplete/src/screens/routes/ViewRoutes.dart';
 
 class LandingPage extends StatefulWidget {

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:places_autocomplete/Utils/Constraints.dart';
-import 'package:places_autocomplete/src/screens/login/resetPassword.dart';
+import 'package:places_autocomplete/src/screens/login/ResetPassword.dart';
 
 class ForgetOTPPage extends StatefulWidget {
   @override
