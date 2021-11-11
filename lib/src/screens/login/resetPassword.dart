@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:places_autocomplete/Utils/Constraints.dart';
 import 'package:places_autocomplete/src/screens/LandingPage.dart';
 import 'package:places_autocomplete/src/screens/login/OtpPage.dart';
+import 'package:places_autocomplete/src/screens/login/Signin.dart';
 
 class ResetPassword extends StatefulWidget {
   @override
@@ -13,6 +14,7 @@ class _MyHomePageState extends State<ResetPassword> {
   GlobalKey<FormState> formKey = new GlobalKey();
   TextEditingController _newpasswordController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
+
   String email, password;
   bool showPassword = true;
   bool _isLoading = false;
@@ -233,7 +235,7 @@ class _MyHomePageState extends State<ResetPassword> {
       Navigator.pop(context);
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => LandingPage()),
+        MaterialPageRoute(builder: (context) => SignIn()),
       );
 
       print("Logging in");

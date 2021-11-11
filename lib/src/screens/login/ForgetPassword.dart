@@ -4,16 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:places_autocomplete/Utils/Constraints.dart';
 import 'package:places_autocomplete/src/api/Api.dart';
 import 'package:places_autocomplete/src/screens/LandingPage.dart';
-import 'package:places_autocomplete/src/screens/login/ForgetPassword.dart';
-
+import 'package:places_autocomplete/src/screens/login/OtpPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SignIn extends StatefulWidget {
+class ForgotPassword extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<SignIn> {
+class _MyHomePageState extends State<ForgotPassword> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   GlobalKey<FormState> formKey = new GlobalKey();
   TextEditingController _emailController = new TextEditingController();
@@ -55,7 +54,7 @@ class _MyHomePageState extends State<SignIn> {
                         height: 70,
                       ),
                       Text(
-                        "Admin Login",
+                        "Forget Password",
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -100,36 +99,10 @@ class _MyHomePageState extends State<SignIn> {
                                           SizedBox(
                                             height: 40,
                                           ),
-                                          passwordInput(),
                                           SizedBox(
                                             height: 40,
                                           ),
                                           SizedBox(height: 15.0),
-                                          Row(
-                                            children: [
-                                              GestureDetector(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ForgotPassword(),
-                                                    ),
-                                                  );
-                                                },
-                                                child: Text(
-                                                  "Forget Password?",
-                                                  style: TextStyle(
-                                                      color: Colors.blue,
-                                                      decoration: TextDecoration
-                                                          .underline),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 50,
-                                          ),
                                         ],
                                       ),
                                     ),
@@ -225,41 +198,12 @@ class _MyHomePageState extends State<SignIn> {
     );
   }
 
-  Widget passwordInput() {
-    return TextFormField(
-      keyboardType: TextInputType.text,
-      obscureText: showPassword,
-      validator: (value) {
-        RegExp regex = new RegExp(
-            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-        if (value.length == 0) {
-          return 'Password Required';
-        } else if (!regex.hasMatch(value)) {
-          return 'Password Must contains \n - Minimum 1 Upper case \n - Minimum 1 lowercase \n - Minimum 1 Number \n - Minimum 1 Special Character \n - Minimum 8 letters';
-        }
-        return null;
-      },
-      onSaved: (String val) {
-        password = val;
-      },
-      controller: _passwordController,
-      textInputAction: TextInputAction.next,
-      decoration: InputDecoration(
-        labelText: "Password",
-        labelStyle: TextStyle(fontSize: 14),
-        contentPadding: new EdgeInsets.fromLTRB(0, 20, 0, 0),
-        suffixIcon: IconButton(
-          icon: Icon(Icons.remove_red_eye),
-          onPressed: () => setState(() => showPassword = !showPassword),
-        ),
-      ),
-    );
-  }
-
   // onclick method to login
   onClick() async {
     if (formKey.currentState.validate()) {
-      _login();
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (BuildContext context) => ForgetOTPPage()),
+      );
 
       setState(() {
         _isLoading = true;
@@ -267,45 +211,5 @@ class _MyHomePageState extends State<SignIn> {
     } else {
       _validate = true;
     }
-  }
-
-  // login function to call from api
-  void _login() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      var data = {
-        "email": _emailController.text,
-        "password": _passwordController.text,
-      };
-
-      var res = await CallApi().authData(data, 'login');
-      var body = json.decode(res.body);
-      if (body['token'] != null) {
-        SharedPreferences localStorage = await SharedPreferences.getInstance();
-        var token = body['token'];
-        var userId = body['user']['id'];
-        localStorage.setString('token', token);
-        localStorage.setInt('userId', userId);
-        print(body);
-        print(body['user']['id']);
-
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (BuildContext context) => LandingPage()),
-        );
-      } else {
-        setState(() {
-          bodyError = body['error'];
-        });
-      }
-    } catch (e) {
-      print(e);
-    }
-
-    setState(() {
-      _isLoading = false;
-    });
   }
 }
