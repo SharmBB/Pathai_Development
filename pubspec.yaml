@@ -47,6 +47,7 @@ dependencies:
   flutter_google_places: ^0.3.0
   http: ^0.13.3
   uuid: ^3.0.4
+  pin_code_fields: ^7.0.0-nullsafety
   
 dev_dependencies:
   flutter_test:

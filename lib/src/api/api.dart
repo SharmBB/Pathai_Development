@@ -1,4 +1,3 @@
-
 // import 'dart:convert';
 import 'dart:convert';
 import 'dart:io';
@@ -8,6 +7,7 @@ import 'package:http/http.dart' as http;
 class CallApi {
   // final String _url = Uri.parse('http://logintut.localhost/api/');
   var _urlAuth = 'https://paathaiapi.moodfor.codes/api/';
+  var _urlwithoutAuth = 'https://class.moodfor.codes/api/';
   // var _urlwithoutAuth = 'https://moodfor.codes/api/';
   // var token;
 
@@ -19,6 +19,7 @@ class CallApi {
       headers: _setHeaders(),
     );
   }
+
   postPoints(data, apiUrl) async {
     var fullUrl = Uri.parse(_urlAuth + apiUrl);
     return await http.post(
@@ -27,6 +28,7 @@ class CallApi {
       headers: _setHeaders(),
     );
   }
+
   getRoutes(apiUrl) async {
     var fullUrl = Uri.parse(_urlAuth + apiUrl);
     return await http.get(
@@ -34,6 +36,7 @@ class CallApi {
       headers: _setHeaders(),
     );
   }
+
   getPoints(apiUrl) async {
     var fullUrl = Uri.parse(_urlAuth + apiUrl);
     return await http.get(
@@ -41,6 +44,7 @@ class CallApi {
       headers: _setHeaders(),
     );
   }
+
   updateRoutes(data, apiUrl) async {
     var fullUrl = Uri.parse(_urlAuth + apiUrl);
     return await http.put(
@@ -49,7 +53,8 @@ class CallApi {
       headers: _setHeaders(),
     );
   }
-  deleteRoutes(data,apiUrl) async {
+
+  deleteRoutes(data, apiUrl) async {
     var fullUrl = Uri.parse(_urlAuth + apiUrl);
     return await http.delete(
       fullUrl,
@@ -71,7 +76,4 @@ class CallApi {
         'Accept': 'application/json',
         // 'Authorization': 'Bearer $token'
       };
-
-
-
 }

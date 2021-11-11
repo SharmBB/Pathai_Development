@@ -11,22 +11,8 @@ void main() {
   runApp(MyApp());
 }
 
-// class MyApp extends StatelessWidget {
-//   // This widget is the root of your application.
-//   @override
-//   Widget build(BuildContext context) {
-//     return ChangeNotifierProvider(
-//       create: (context) => ApplicationBloc(),
-//       child: MaterialApp(
-//         title: 'Flutter Demo',
-//         home: NewHome(),
-//         debugShowCheckedModeBanner: false,
-//       ),
-//     );
-//   }
-// }
 class MyApp extends StatelessWidget {
-  @override
+  @override  
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,

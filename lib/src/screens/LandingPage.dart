@@ -80,7 +80,7 @@ class _LandingPageState extends State<LandingPage> {
                   buttonFunction: () {}),
               DashboardCard(
                   title: "Routes",
-                  numbers: loaderRoutes ? "-" : finalRoutes ,
+                  numbers: loaderRoutes ? "-" : finalRoutes,
                   secondText: "Text",
                   thirdText: "More Text",
                   buttonText: "New  Route",
@@ -109,10 +109,10 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 
-  // get Routes number 
+  // get Routes number
   void _apiGetRoutes() async {
     setState(() {
-        loaderRoutes = true;
+      loaderRoutes = true;
     });
     try {
       var res = await CallApi().getRoutes('getRoutes');
@@ -121,8 +121,7 @@ class _LandingPageState extends State<LandingPage> {
       print(e);
     }
     setState(() {
-        loaderRoutes = false;
+      loaderRoutes = false;
     });
   }
-
 }

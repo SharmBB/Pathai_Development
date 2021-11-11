@@ -3,15 +3,15 @@ import 'package:places_autocomplete/Utils/Constraints.dart';
 import 'package:places_autocomplete/src/screens/LandingPage.dart';
 import 'package:places_autocomplete/src/screens/login/otpPage.dart';
 
-class SignIn extends StatefulWidget {
+class ResetPassword extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<SignIn> {
+class _MyHomePageState extends State<ResetPassword> {
   final scaffoldKey = new GlobalKey<ScaffoldState>();
   GlobalKey<FormState> formKey = new GlobalKey();
-  TextEditingController _emailController = new TextEditingController();
+  TextEditingController _newpasswordController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
   String email, password;
   bool showPassword = true;
@@ -48,7 +48,7 @@ class _MyHomePageState extends State<SignIn> {
                       height: 70,
                     ),
                     Text(
-                      "Admin Login",
+                      "Reset Password",
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -88,35 +88,13 @@ class _MyHomePageState extends State<SignIn> {
                                         SizedBox(
                                           height: 20,
                                         ),
-                                        emailInput(),
-                                        SizedBox(
-                                          height: 40,
-                                        ),
                                         passwordInput(),
                                         SizedBox(
                                           height: 40,
                                         ),
-                                        Row(
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ForgetOTPPage(),
-                                                  ),
-                                                );
-                                              },
-                                              child: Text(
-                                                "Forget Password?",
-                                                style: TextStyle(
-                                                    color: Colors.blue,
-                                                    decoration: TextDecoration
-                                                        .underline),
-                                              ),
-                                            )
-                                          ],
+                                        NewpasswordInput(),
+                                        SizedBox(
+                                          height: 40,
                                         ),
                                         SizedBox(
                                           height: 50,
@@ -188,30 +166,34 @@ class _MyHomePageState extends State<SignIn> {
     );
   }
 
-  Widget emailInput() {
-    RegExp regex = new RegExp(
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
+  Widget NewpasswordInput() {
     return TextFormField(
-      decoration: new InputDecoration(
-        labelText: "Email",
-        hintText: "e.g abc@gmail.com",
-        labelStyle: TextStyle(fontSize: 14),
-      ),
-      textInputAction: TextInputAction.next,
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
+      obscureText: showPassword,
       validator: (value) {
+        RegExp regex = new RegExp(
+            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
         if (value.length == 0) {
-          return 'Email Required';
+          return 'Password Required';
         } else if (!regex.hasMatch(value)) {
-          return 'Enter Valid Email';
-        } else {
-          return null;
+          return 'Password Must contains \n - Minimum 1 Upper case \n - Minimum 1 lowercase \n - Minimum 1 Number \n - Minimum 1 Special Character \n - Minimum 8 letters';
         }
+        return null;
       },
       onSaved: (String val) {
-        email = val;
+        password = val;
       },
-      controller: _emailController,
+      controller: _newpasswordController,
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+        labelText: "Confirm Password",
+        labelStyle: TextStyle(fontSize: 14),
+        contentPadding: new EdgeInsets.fromLTRB(0, 20, 0, 0),
+        suffixIcon: IconButton(
+          icon: Icon(Icons.remove_red_eye),
+          onPressed: () => setState(() => showPassword = !showPassword),
+        ),
+      ),
     );
   }
 
@@ -235,7 +217,7 @@ class _MyHomePageState extends State<SignIn> {
       controller: _passwordController,
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-        labelText: "Password",
+        labelText: "New Password",
         labelStyle: TextStyle(fontSize: 14),
         contentPadding: new EdgeInsets.fromLTRB(0, 20, 0, 0),
         suffixIcon: IconButton(
