@@ -98,16 +98,13 @@ class DrawerMenu extends StatelessWidget {
   }
 
   void _handleLogout(BuildContext context) async {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => SignIn()));
     try {
-      var data = {};
-      var res = await CallApi().postData(data, 'logout');
-      var body = json.decode(res.body);
-      print(body);
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       localStorage.remove('token');
       localStorage.remove('userId');
       print("logged out.");
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => SignIn()));
     } catch (e) {
       print(e);
     }
