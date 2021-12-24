@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:places_autocomplete/Utils/Constraints.dart';
 import 'package:places_autocomplete/src/api/api.dart';
@@ -24,6 +25,7 @@ class _UpdateRouteState extends State<UpdateRoute> {
   double latfromMap = null;
   double lonfromMap = null;
   var timefromMap = null;
+  var pricefromMap = "0";
   bool _loader = false;
   String busRoute;
   int busNo;
@@ -166,11 +168,12 @@ class _UpdateRouteState extends State<UpdateRoute> {
   }
 
   latLonListView(item) {
+    TextEditingController _priceController = TextEditingController(text : latlonFromMap[item['index']-1]['price'].toString()) ;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         children: [
-          // Text(item.toString(),),
+          // Text(item['price'].toString(),),
           Row(
             children: [
               Text(item['lat'].toStringAsFixed(7) +
@@ -223,6 +226,28 @@ class _UpdateRouteState extends State<UpdateRoute> {
               ),
             ],
           ),
+          GestureDetector(
+                onTap: (){ print(item); },
+                child: Row(
+                  children: [
+                    Text("Price",style: TextStyle(fontWeight: FontWeight.bold),),
+                    SizedBox(width: 15),
+                    Flexible(
+                      child: TextFormField(
+                            decoration: new InputDecoration(
+                              hintText: "Enter price",
+                            ),
+                            // textInputAction: TextInputAction.next,
+                            controller: _priceController,
+                            onChanged : (value) {
+                              latlonFromMap[item['index']- 1]['price'] = _priceController.text;
+                              print(latlonFromMap);
+                            },
+                          ),
+                    ),
+                  ],
+                )
+              ) ,
         ],
       ),
     );
@@ -358,7 +383,8 @@ class _UpdateRouteState extends State<UpdateRoute> {
             "index": latlonFromMap.length + 1,
             "lat": _PointsFromDB[0][i]['latitude'],
             "long": _PointsFromDB[0][i]['longitude'],
-            "time": _PointsFromDB[0][i]['time']
+            "time": _PointsFromDB[0][i]['time'],
+            "price": _PointsFromDB[0][i]['price']
           });
         });
       }
@@ -438,6 +464,7 @@ class _UpdateRouteState extends State<UpdateRoute> {
               "latitude": data['lat'],
               "longitude": data['long'],
               "route_id": idForGetRoute,  // this would be dynamic - after routes added ID automatically need to assign
+              "price": data['price']
             };
 
             var res = await CallApi().postPoints(addPoints, 'addPoint');
@@ -589,7 +616,8 @@ class _UpdateRouteState extends State<UpdateRoute> {
           "index": latlonFromMap.length + 1,
           "lat": latfromMap,
           "long": lonfromMap,
-          "time": timefromMap
+          "time": timefromMap,
+          "price" : pricefromMap
         });
       });
     }
@@ -616,7 +644,8 @@ class _UpdateRouteState extends State<UpdateRoute> {
           "index": latlonFromMap.length + 1,
           "lat": latfromMap,
           "long": lonfromMap,
-          "time": timefromMap
+          "time": timefromMap,
+          "price" : pricefromMap
         });
       });
     }

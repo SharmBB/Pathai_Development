@@ -225,7 +225,8 @@ class _ViewRoutesState extends State<ViewRoutes> {
       bodyRoutes = json.decode(res.body);
 
       // Add routes to _RoutesFromDB List
-      // print("---------");
+      print("---------");
+      print(bodyRoutes);
       _RoutesFromDB.add(bodyRoutes);
       _foundUsers = _RoutesFromDB[0];
       // print(_RoutesFromDB[0]);

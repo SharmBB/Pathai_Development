@@ -22,6 +22,7 @@ class _AddRouteState extends State<AddRoute> {
   double latfromMap = null;
   double lonfromMap = null;
   var timefromMap = null;
+  var pricefromMap = "";
   bool _loader = false;
   String busRoute;
   int busNo;
@@ -150,6 +151,7 @@ class _AddRouteState extends State<AddRoute> {
   }
 
   latLonListView(item) {
+    TextEditingController _priceController = TextEditingController(text : latlonFromMap[item['index']-1]['price']) ;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
@@ -204,6 +206,29 @@ class _AddRouteState extends State<AddRoute> {
               ),
             ],
           ),
+          
+          GestureDetector(
+                onTap: (){ print(item); },
+                child: Row(
+                  children: [
+                    Text("Price",style: TextStyle(fontWeight: FontWeight.bold),),
+                    SizedBox(width: 15),
+                    Flexible(
+                      child: TextFormField(
+                            decoration: new InputDecoration(
+                              hintText: "Enter price",
+                            ),
+                            // textInputAction: TextInputAction.next,
+                            controller: _priceController,
+                            onChanged : (value) {
+                              latlonFromMap[item['index']- 1]['price'] = _priceController.text;
+                              print(latlonFromMap);
+                            },
+                          ),
+                    ),
+                  ],
+                )
+              ) ,
         ],
       ),
     );
@@ -312,8 +337,9 @@ class _AddRouteState extends State<AddRoute> {
         for (var data in latlonFromMap) {
           print(data);
           var addPoints = {
-            "name": "J to USA",
+            "name": "Points${data['index']}",
             "time": data['time'],
+            "price": data['price'],
             "latitude": data['lat'],
             "longitude": data['long'],
             "route_id": bodyRoutes['message']['id'],  // this would be dynamic - after routes added ID automatically need to assign
@@ -467,7 +493,8 @@ class _AddRouteState extends State<AddRoute> {
           "index": latlonFromMap.length + 1,
           "lat": latfromMap,
           "long": lonfromMap,
-          "time": timefromMap
+          "time": timefromMap,
+          "price": pricefromMap
         });
       });
     }
@@ -494,7 +521,8 @@ class _AddRouteState extends State<AddRoute> {
           "index": latlonFromMap.length + 1,
           "lat": latfromMap,
           "long": lonfromMap,
-          "time": timefromMap
+          "time": timefromMap,
+          "price": pricefromMap
         });
       });
     }
